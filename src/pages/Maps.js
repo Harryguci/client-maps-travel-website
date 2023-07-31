@@ -103,7 +103,7 @@ export default function Maps() {
   const [alertState, setAlertState] = useState({});
 
   useEffect(() => {
-    fetch("http://localhost:3001/points/data")
+    fetch("https://server-maps-travel-website.onrender.com/points/data")
       .then((response) => response.json())
       .then((data) => setCites(data))
       .catch((error) => console.log(error));
@@ -136,7 +136,7 @@ export default function Maps() {
 
     setPoints([]);
 
-    await fetch("http://localhost:3001/points/data", {
+    await fetch("https://server-maps-travel-website.onrender.com/points/data", {
       method: "POST",
       mode: "cors", // no-cors, *cors, same-origin
       cache: "no-cache", // *default, no-cache, reload, force-cache, only-if-cached
