@@ -291,6 +291,7 @@ export default function Maps() {
                 style={{ maxWidth: 500 }}
                 value={newCityState}
                 onChange={(e) => setNewCityState(e.target.value)}
+                placeholder="city"
               />
               <button
                 className="custom-button primary"
