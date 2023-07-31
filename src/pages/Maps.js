@@ -47,6 +47,9 @@ import {
 } from "react-bootstrap";
 // import polygonArea from "../helpers/polygonArea";
 import convertVNtoEng from "../helpers/convertVNtoEng";
+
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faTurnUp } from "@fortawesome/free-solid-svg-icons";
 const hanoipoints = [
   [21.079374593525337, 105.89481353759767],
   [21.07376838647649, 105.92348098754884],
@@ -175,15 +178,18 @@ export default function Maps() {
           <button
             className="custom-button"
             onClick={(e) => setShowInfoBox((prev) => !prev)}
+            style={window.innerWidth > 800 ? { width: "100%" } : {}}
           >
             {showInforBox ? "Close Info Box" : "Info Box"}
           </button>
-          <button
-            className="custom-button"
-            onClick={(e) => window.scrollTo(0, window.innerHeight)}
-          >
-            City List
-          </button>
+          {window.innerWidth < 800 && (
+            <button
+              className="custom-button"
+              onClick={(e) => window.scrollTo(0, window.innerHeight)}
+            >
+              City List
+            </button>
+          )}
         </div>
         {showInforBox && (
           <ListGroup>
@@ -299,6 +305,18 @@ export default function Maps() {
                 <p>[-][+] change zoom</p>
               </div>
             </Row>
+            {window.innerWidth < 800 && (
+              <Row>
+                <div>
+                  <button
+                    className="custom-button"
+                    onClick={(e) => window.scrollTo(0, 0)}
+                  >
+                    <FontAwesomeIcon icon={faTurnUp} />
+                  </button>
+                </div>
+              </Row>
+            )}
           </Col>
           <Col className="maps-section__main">
             {alertState && alertState.content && (
