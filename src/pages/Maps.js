@@ -102,6 +102,8 @@ export default function Maps() {
 
   const [alertState, setAlertState] = useState({});
 
+  const [showInforBox, setShowInfoBox] = useState(true);
+
   useEffect(() => {
     fetch("https://server-maps-travel-website.onrender.com/points/data")
       .then((response) => response.json())
@@ -169,54 +171,70 @@ export default function Maps() {
           boxShadow: "5px 5px 30px rgba(0,0,0,0.3)",
         }}
       >
-        <ListGroup>
-          <ListGroupItem>
-            Tỉnh / Thành phố:
-            <b className="mx-2">{weatherData.name || "~"}</b>
-          </ListGroupItem>
-          <ListGroupItem>
-            Nhiệt độ:
-            <b className="mx-2">
-              {(weatherData.main && weatherData.main.temp) || "~"}
-            </b>
-          </ListGroupItem>
-          <ListGroupItem>
-            Cảm giác như:
-            <b className="mx-2">
-              {(weatherData.main && weatherData.main.feels_like) || "~"}
-            </b>
-          </ListGroupItem>
-          <ListGroupItem>
-            Nhiệt độ cao nhất:
-            <b className="mx-2">
-              {(weatherData.main && weatherData.main.temp_max) || "~"}
-            </b>
-          </ListGroupItem>
-          <ListGroupItem>
-            Nhiệt độ thấp nhất:
-            <b className="mx-2">
-              {(weatherData.main && weatherData.main.temp_min) || "~"}
-            </b>
-          </ListGroupItem>
-          <ListGroupItem>
-            Độ ẩm:
-            <b className="mx-2">
-              {(weatherData.main && weatherData.main.humidity) || "~"}
-            </b>
-          </ListGroupItem>
-          <ListGroupItem>
-            Tốc độ gió:
-            <b className="mx-2">
-              {(weatherData.wind && weatherData.wind.speed) || "~"}
-            </b>
-          </ListGroupItem>
-          <ListGroupItem>
-            Lượng mưa:
-            <b className="mx-2">
-              {(weatherData.rain && weatherData.rain["1h"]) || "~"}
-            </b>
-          </ListGroupItem>
-        </ListGroup>
+        <div className="control-information-box d-flex gap-1">
+          <button
+            className="custom-button"
+            onClick={(e) => setShowInfoBox((prev) => !prev)}
+          >
+            {showInforBox ? "Close Info Box" : "Info Box"}
+          </button>
+          <button
+            className="custom-button"
+            onClick={(e) => window.scrollTo(0, window.innerHeight)}
+          >
+            City List
+          </button>
+        </div>
+        {showInforBox && (
+          <ListGroup>
+            <ListGroupItem>
+              Tỉnh / Thành phố:
+              <b className="mx-2">{weatherData.name || "~"}</b>
+            </ListGroupItem>
+            <ListGroupItem>
+              Nhiệt độ:
+              <b className="mx-2">
+                {(weatherData.main && weatherData.main.temp) || "~"}
+              </b>
+            </ListGroupItem>
+            <ListGroupItem>
+              Cảm giác như:
+              <b className="mx-2">
+                {(weatherData.main && weatherData.main.feels_like) || "~"}
+              </b>
+            </ListGroupItem>
+            <ListGroupItem>
+              Nhiệt độ cao nhất:
+              <b className="mx-2">
+                {(weatherData.main && weatherData.main.temp_max) || "~"}
+              </b>
+            </ListGroupItem>
+            <ListGroupItem>
+              Nhiệt độ thấp nhất:
+              <b className="mx-2">
+                {(weatherData.main && weatherData.main.temp_min) || "~"}
+              </b>
+            </ListGroupItem>
+            <ListGroupItem>
+              Độ ẩm:
+              <b className="mx-2">
+                {(weatherData.main && weatherData.main.humidity) || "~"}
+              </b>
+            </ListGroupItem>
+            <ListGroupItem>
+              Tốc độ gió:
+              <b className="mx-2">
+                {(weatherData.wind && weatherData.wind.speed) || "~"}
+              </b>
+            </ListGroupItem>
+            <ListGroupItem>
+              Lượng mưa:
+              <b className="mx-2">
+                {(weatherData.rain && weatherData.rain["1h"]) || "~"}
+              </b>
+            </ListGroupItem>
+          </ListGroup>
+        )}
       </div>
 
       <Container
@@ -242,6 +260,7 @@ export default function Maps() {
                         lng: city.points[0][1],
                       });
                       setPoints(city.points || hanoipoints);
+                      window.scrollTo(0, 0);
                     }}
                   >
                     {city.name}
