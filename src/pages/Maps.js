@@ -153,24 +153,32 @@ export default function Maps() {
     });
 
     setPoints([]);
-
-    await fetch("https://server-maps-travel-website.onrender.com/points/data", {
-      method: "POST",
-      mode: "cors", // no-cors, *cors, same-origin
-      cache: "no-cache", // *default, no-cache, reload, force-cache, only-if-cached
-      credentials: "same-origin", // include, *same-origin, omit
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        id: createId(newCityState),
-        name: newCityState,
-        points: points,
-      }),
-    })
-      .then((response) => response.json())
-      .then((data) => console.log("POST", data))
-      .catch((err) => console.log(err));
+    if (newCityState && points && points.length) {
+      await fetch("https://server-maps-travel-website.onrender.com/points/data", {
+        method: "POST",
+        mode: "cors", // no-cors, *cors, same-origin
+        cache: "no-cache", // *default, no-cache, reload, force-cache, only-if-cached
+        credentials: "same-origin", // include, *same-origin, omit
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          id: createId(newCityState),
+          name: newCityState,
+          points: points,
+        }),
+      })
+        .then((response) => response.json())
+        .then((data) => {
+          if (data.error) {
+            alert(data.error);
+          } else
+            console.log("POST", data)
+        })
+        .catch((err) => console.log(err));
+    } else {
+      alert('Please fill the information');
+    }
   };
 
   // useEffect(() => console.log(alertState), [alertState]);
@@ -309,6 +317,7 @@ export default function Maps() {
                 value={newCityState}
                 onChange={(e) => setNewCityState(e.target.value)}
                 placeholder="city"
+                required
               />
               <button
                 className="custom-button primary"
