@@ -47,9 +47,11 @@ import {
 } from "react-bootstrap";
 // import polygonArea from "../helpers/polygonArea";
 import convertVNtoEng from "../helpers/convertVNtoEng";
-
+import ImageForm from "../components/ImageForm";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faTurnUp } from "@fortawesome/free-solid-svg-icons";
+import ReviewMarker from '../components/ReviewMarker';
+
 const hanoipoints = [
   [21.079374593525337, 105.89481353759767],
   [21.07376838647649, 105.92348098754884],
@@ -104,8 +106,10 @@ export default function Maps() {
   const [weatherData, setWeatherData] = useState({});
 
   const [alertState, setAlertState] = useState({});
-
   const [showInforBox, setShowInfoBox] = useState(true);
+  const [showImageForm, setShowImageForm] = useState(false);
+
+  const [reviews, setReviews] = useState([]);
 
   useEffect(() => {
     fetch("https://server-maps-travel-website.onrender.com/points/data")
@@ -113,6 +117,15 @@ export default function Maps() {
       .then((data) => setCites(data))
       .catch((error) => console.log(error));
   }, []);
+
+  useEffect(() => {
+    fetch('https://server-maps-travel-website.onrender.com/get-image')
+      .then((response) => response.json())
+      .then((data) => setReviews(data))
+      .catch((error) => console.log(error));
+  }, []);
+
+  useEffect(() => console.log('[Reviews]', reviews), [reviews]);
 
   useEffect(() => {
     fetch(
@@ -160,7 +173,7 @@ export default function Maps() {
       .catch((err) => console.log(err));
   };
 
-  useEffect(() => console.log(alertState), [alertState]);
+  // useEffect(() => console.log(alertState), [alertState]);
 
   return (
     <>
@@ -242,7 +255,11 @@ export default function Maps() {
           </ListGroup>
         )}
       </div>
-
+      {showImageForm && ( // disable prettier
+        <div className="center" style={{ zIndex: 1000 }}>
+          <ImageForm location={currentLocation} />
+        </div>
+      )}
       <Container
         fluid
         className="maps-section position-relative"
@@ -299,6 +316,12 @@ export default function Maps() {
               >
                 Add
               </button>
+              <button
+                className="custom-button"
+                onClick={e => setShowImageForm(prev => !prev)}
+              >
+                Add Image
+              </button>
             </Row>
             <Row>
               <div className="opacity-50">
@@ -344,6 +367,13 @@ export default function Maps() {
                     setCurrentLocation={setCurrentLocation}
                     setAlertState={setAlertState}
                   />
+
+                  {reviews && reviews.length &&
+                    (reviews.map((review) => (
+                      <ReviewMarker key={review.id} review={review} />
+                    )))
+                  }
+
                   <TileLayer {...attributions} />
                   {showPolygon && points && points.length && (
                     <ToolTipPoly points={points} />

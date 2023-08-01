@@ -49,8 +49,8 @@ export default function LocationMarker({
         position={position}
         icon={
           new Icon({
-            iconUrl: markerIconPng,
-            iconSize: [25, 41],
+            iconUrl: './marker-location-yellow.png',
+            iconSize: [41, 41],
             iconAnchor: [12, 41],
           })
         }
