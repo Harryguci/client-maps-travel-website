@@ -318,7 +318,7 @@ export default function Maps() {
               </button>
               <button
                 className="custom-button"
-                onClick={e => setShowImageForm(prev => !prev)}
+                onClick={e => { setShowImageForm(prev => !prev); window.scrollTo(0, 0) }}
               >
                 Add Image
               </button>
