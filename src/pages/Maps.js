@@ -181,6 +181,23 @@ export default function Maps() {
     }
   };
 
+  const detectCurrentLocation = (e) => {
+    if (navigator.geolocation) {
+      setAlertState({
+        variant: "success",
+        content: "Detecting location...",
+      });
+
+      navigator.geolocation.getCurrentPosition(function (position) {
+        setCenter({
+          lat: position.coords.latitude,
+          lng: position.coords.longitude
+        });
+        setAlertState({});
+      });
+    }
+  }
+
   // useEffect(() => console.log(alertState), [alertState]);
 
   return (
@@ -279,6 +296,12 @@ export default function Maps() {
               <h3 className="brand">Harryguci</h3>
             </Row>
             <Row className="my-2 d-flex justify-content-center gap-2">
+              <button
+                className="custom-button danger"
+                onClick={detectCurrentLocation}
+              >
+                Current Location
+              </button>
               {cites &&
                 cites.length &&
                 cites.map((city) => (
