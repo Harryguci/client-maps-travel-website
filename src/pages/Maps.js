@@ -187,6 +187,7 @@ export default function Maps() {
         variant: "success",
         content: "Detecting location...",
       });
+      window.scrollTo(0, 0);
 
       navigator.geolocation.getCurrentPosition(function (position) {
         setCenter({
