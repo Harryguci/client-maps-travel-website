@@ -55,7 +55,20 @@
 .alert {
   position: absolute !important;
   z-index: 50;
-  left: 0;
+  left: 50%;
   top: 0;
+  width: 50%;
+  min-width: 300px;
+  transform: translate(-50%, 0);
+}
+
+.background-dark {
+  position: absolute;
+  z-index: 500;
   width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+  background-color: rgba(0, 0, 0, 0.2);
+  z-index: 500;
 }

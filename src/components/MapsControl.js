@@ -1,4 +1,4 @@
-import { useState, useEffect, useMemo } from 'react';
+import { useState, useEffect, useMemo, useCallback } from 'react';
 import { Form, FormControl, Row } from 'react-bootstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faTurnUp, faClose } from '@fortawesome/free-solid-svg-icons';
@@ -36,12 +36,18 @@ function MapsControl({
             });
         }
     }
+
+    const handleHide = useCallback(() => {
+        if (hide) hide();
+    }, [hide]);
+    
     return (
         <>
+            <div className='background-dark' onClick={handleHide}></div>
             <button
                 className="custom-button position-absolute"
                 style={{ top: 20, left: 210, zIndex: 2000 }}
-                onClick={hide}
+                onClick={handleHide}
             >
                 <FontAwesomeIcon icon={faClose} />
             </button>
