@@ -4,7 +4,12 @@
   border-radius: 10px;
   box-shadow: 0 0 2rem rgba(0, 0, 0, 0.2);
   width: 500px;
+  z-index: 1000;
   max-width: 95vw;
+
+  animation-duration: 0.3s;
+  animation-timing-function: ease-in-out;
+  animation-fill-mode: both;
 
   > div {
     margin-top: 1rem;
@@ -43,5 +48,26 @@
     width: 100%;
     height: 100%;
     object-fit: cover;
+  }
+}
+
+.background-dark {
+  position: absolute;
+  z-index: 500;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+  background-color: rgba(0, 0, 0, 0.2);
+  z-index: 500;
+}
+
+.image-form.hidden {
+  animation-name: hidden;
+  @keyframes hidden {
+    100% {
+      opacity: 0;
+      transform: translate(-50%, calc(-50% + 50px));
+    }
   }
 }

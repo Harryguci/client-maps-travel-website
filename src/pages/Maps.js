@@ -311,10 +311,8 @@ export default function Maps() {
           </ListGroup>
         )}
       </div>
-      {showImageForm && ( // disable prettier
-        <div className="center" style={{ zIndex: 1000 }}>
-          <ImageForm location={currentLocation} />
-        </div>
+      {showImageForm && ( // disable prettier 
+        <ImageForm location={currentLocation} hide={() => setShowImageForm(false)} />
       )}
       <Container
         fluid
@@ -348,7 +346,7 @@ export default function Maps() {
                         lat: city.points[0][0],
                         lng: city.points[0][1],
                       });
-                      
+
                       setPoints(city.points || hanoipoints);
                       window.scrollTo(0, 0);
                     }}
