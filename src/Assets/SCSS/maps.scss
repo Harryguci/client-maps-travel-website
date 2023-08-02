@@ -35,8 +35,10 @@
   }
 
   &__control {
-    min-width: 200px;
-    flex: 0 0 10% !important;
+    background: #ffffff;
+    height: 100%;
+    width: 50%;
+    max-width: 200px;
   }
 
   &__main {

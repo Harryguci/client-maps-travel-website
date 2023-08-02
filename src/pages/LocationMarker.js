@@ -11,6 +11,7 @@ function LocationMarker({
   setAlertState,
 }) {
   const [position, setPosition] = useState(center);
+
   const map = useMapEvents({
     click(e) {
       setPosition(e.latlng);
@@ -57,4 +58,4 @@ function LocationMarker({
   );
 }
 
-export default memo(LocationMarker)
+export default LocationMarker;

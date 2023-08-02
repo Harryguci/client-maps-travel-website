@@ -1,7 +1,7 @@
 // eslint-disable-next-line no-unused-vars
-import React, { useState, useEffect, useLayoutEffect } from "react";
+import React, { useState, useEffect, useLayoutEffect, useCallback } from "react";
 // eslint-disable-next-line no-unused-vars
-import { MapContainer, TileLayer, useMap } from "react-leaflet";
+import { MapContainer, TileLayer, useMapEvents } from "react-leaflet";
 import "leaflet/dist/leaflet.css";
 import "../Assets/SCSS/maps.scss";
 import {
@@ -33,6 +33,8 @@ import LayerTerm from "../components/LayerTerm";
 import attributions from "../helpers/osmProvider";
 import ToolTipPoly from "../components/ToolTipPoly";
 import "bootstrap/dist/css/bootstrap.css";
+import MapsControl from "../components/MapsControl";
+
 
 import {
   // eslint-disable-next-line no-unused-vars
@@ -50,7 +52,7 @@ import {
 import convertVNtoEng from "../helpers/convertVNtoEng";
 import ImageForm from "../components/ImageForm";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faTurnUp, faClose } from "@fortawesome/free-solid-svg-icons";
+import { faBars, faClose } from "@fortawesome/free-solid-svg-icons";
 import ReviewMarker from '../components/ReviewMarker';
 
 const hanoipoints = [
@@ -205,112 +207,12 @@ export default function Maps() {
     }
   };
 
-  const detectCurrentLocation = (e) => {
-    if (navigator.geolocation) {
-      setAlertState({
-        variant: "success",
-        content: "Detecting location...",
-      });
-      window.scrollTo(0, 0);
-
-      navigator.geolocation.getCurrentPosition(function (position) {
-        setCenter({
-          lat: position.coords.latitude,
-          lng: position.coords.longitude
-        });
-
-        setCurrentLocation({
-          lat: position.coords.latitude,
-          lng: position.coords.longitude
-        });
-
-        setAlertState({});
-        console.log('detected location...');
-      });
-    }
-  }
+  const [showMapsControl, setShowMapsControl] = useState(() => {
+    return !(window.innerWidth < 768);
+  });
 
   return (
     <>
-      <div
-        className="information-box"
-        style={{
-          position: "absolute",
-          right: "1rem",
-          top: "1rem",
-          zIndex: 100,
-          boxShadow: "5px 5px 30px rgba(0,0,0,0.3)",
-        }}
-      >
-        <div className="control-information-box d-flex gap-1 justify-content-center">
-          <button
-            className="custom-button"
-            onClick={(e) => setShowInfoBox((prev) => !prev)}
-            style={window.innerWidth > 800 ? { width: "100%" } : { flex: '0 0 50%' }}
-          >
-            {showInforBox ? <FontAwesomeIcon icon={faClose} /> : "Info Box"}
-          </button>
-          {window.innerWidth < 800 && (
-            <button
-              className="custom-button"
-              style={{ flex: '0 0 50%' }}
-              onClick={(e) => window.scrollTo(0, window.innerHeight)}
-            >
-              City List
-            </button>
-          )}
-        </div>
-        {showInforBox && (
-          <ListGroup>
-            <ListGroupItem>
-              Tỉnh / Thành phố:
-              <b className="mx-2">{weatherData.name || "~"}</b>
-            </ListGroupItem>
-            <ListGroupItem>
-              Nhiệt độ:
-              <b className="mx-2">
-                {(weatherData.main && weatherData.main.temp) || "~"}
-              </b>
-            </ListGroupItem>
-            <ListGroupItem>
-              Cảm giác như:
-              <b className="mx-2">
-                {(weatherData.main && weatherData.main.feels_like) || "~"}
-              </b>
-            </ListGroupItem>
-            <ListGroupItem>
-              Nhiệt độ cao nhất:
-              <b className="mx-2">
-                {(weatherData.main && weatherData.main.temp_max) || "~"}
-              </b>
-            </ListGroupItem>
-            <ListGroupItem>
-              Nhiệt độ thấp nhất:
-              <b className="mx-2">
-                {(weatherData.main && weatherData.main.temp_min) || "~"}
-              </b>
-            </ListGroupItem>
-            <ListGroupItem>
-              Độ ẩm:
-              <b className="mx-2">
-                {(weatherData.main && weatherData.main.humidity) || "~"}
-              </b>
-            </ListGroupItem>
-            <ListGroupItem>
-              Tốc độ gió:
-              <b className="mx-2">
-                {(weatherData.wind && weatherData.wind.speed) || "~"}
-              </b>
-            </ListGroupItem>
-            <ListGroupItem>
-              Lượng mưa:
-              <b className="mx-2">
-                {(weatherData.rain && weatherData.rain["1h"]) || "~"}
-              </b>
-            </ListGroupItem>
-          </ListGroup>
-        )}
-      </div>
       {showImageForm && ( // disable prettier 
         <ImageForm location={currentLocation} hide={() => setShowImageForm(false)} />
       )}
@@ -320,95 +222,7 @@ export default function Maps() {
         style={{ zIndex: 5 }}
       >
         <Row>
-          <Col className="maps-section__control p-4">
-            <Row>
-              <h3 className="brand">Harryguci</h3>
-            </Row>
-            <Row className="my-2 d-flex justify-content-center gap-2">
-              <button
-                className="custom-button danger"
-                onClick={detectCurrentLocation}
-              >
-                Current Location
-              </button>
-              {cites &&
-                cites.length &&
-                cites.map((city) => (
-                  <button
-                    key={city.id}
-                    className="custom-button"
-                    onClick={(e) => {
-                      setCenter({
-                        lat: city.points[0][0],
-                        lng: city.points[0][1],
-                      });
-                      setCurrentLocation({
-                        lat: city.points[0][0],
-                        lng: city.points[0][1],
-                      });
-
-                      setPoints(city.points || hanoipoints);
-                      window.scrollTo(0, 0);
-                    }}
-                  >
-                    {city.name}
-                  </button>
-                ))}
-              <button
-                className="custom-button danger"
-                onClick={(e) => setPoints([])}
-              >
-                Reset
-              </button>
-            </Row>
-            <Row className="d-flex justify-content-center my-5 gap-2">
-              <Form.Check // prettier-ignore
-                type="switch"
-                id="custom-switch"
-                label="Show poly"
-                onChange={(e) => setShowPolygon((prev) => !prev)}
-              />
-              <FormControl
-                type="text"
-                style={{ maxWidth: 500 }}
-                value={newCityState}
-                onChange={(e) => setNewCityState(e.target.value)}
-                placeholder="city"
-                required
-              />
-              <button
-                className="custom-button primary"
-                onClick={handleAddPlace}
-              >
-                Add
-              </button>
-              <button
-                className="custom-button"
-                onClick={e => { setShowImageForm(prev => !prev); window.scrollTo(0, 0) }}
-              >
-                Add Image
-              </button>
-            </Row>
-            <Row>
-              <div className="opacity-50">
-                <p>[space] back to current location</p>
-                <p>[-][+] change zoom</p>
-              </div>
-            </Row>
-            {window.innerWidth < 800 && (
-              <Row>
-                <div>
-                  <button
-                    className="custom-button"
-                    onClick={(e) => window.scrollTo(0, 0)}
-                  >
-                    <FontAwesomeIcon icon={faTurnUp} />
-                  </button>
-                </div>
-              </Row>
-            )}
-          </Col>
-          <Col className="maps-section__main">
+          <Col className="col-12 maps-section__main">
             {alertState && alertState.content && (
               <Alert
                 key={JSON.stringify(alertState)}
@@ -424,7 +238,7 @@ export default function Maps() {
                   center={center}
                   zoom={13}
                   scrollWheelZoom={false}
-                  style={{ height: "100vh", position: "relative", zIndex: 5 }}
+                  style={{ height: "100vh", position: "relative", zIndex: 5, display: "flex !important" }}
                 >
                   <LocationMarker
                     center={center}
@@ -444,6 +258,98 @@ export default function Maps() {
                   {showPolygon && points && points.length && (
                     <ToolTipPoly points={points} />
                   )}
+
+                  {showMapsControl ? <MapsControl
+                    cites={cites}
+                    setCenter={setCenter}
+                    setCurrentLocation={setCurrentLocation}
+                    setPoints={setPoints}
+                    hanoipoints={hanoipoints}
+                    setShowPolygon={setShowPolygon}
+                    newCityState={newCityState}
+                    setNewCityState={setNewCityState}
+                    handleAddPlace={handleAddPlace}
+                    setShowImageForm={setShowImageForm}
+                    hide={() => setShowMapsControl(false)}
+                  /> : <button
+                    className="custom-button position-absolute"
+                    style={{ top: 100, left: 20, zIndex: 2000 }}
+                    onClick={e => setShowMapsControl(true)}
+                  >
+                    <FontAwesomeIcon icon={faBars} />
+                  </button>}
+
+                  <div
+                    className="information-box"
+                    style={{
+                      position: "absolute",
+                      right: "1rem",
+                      top: "1rem",
+                      zIndex: 2000,
+                      boxShadow: "5px 5px 30px rgba(0,0,0,0.3)",
+                    }}
+                  >
+                    <div className="control-information-box d-flex gap-1 justify-content-center">
+                      <button
+                        className="custom-button"
+                        onClick={(e) => setShowInfoBox((prev) => !prev)}
+                        style={{ width: "100%" }}
+                      >
+                        {showInforBox ? <FontAwesomeIcon icon={faClose} /> : "Info Box"}
+                      </button>
+                    </div>
+                    {showInforBox && (
+                      <ListGroup>
+                        <ListGroupItem>
+                          Tỉnh / Thành phố:
+                          <b className="mx-2">{weatherData.name || "~"}</b>
+                        </ListGroupItem>
+                        <ListGroupItem>
+                          Nhiệt độ:
+                          <b className="mx-2">
+                            {(weatherData.main && weatherData.main.temp) || "~"}
+                          </b>
+                        </ListGroupItem>
+                        <ListGroupItem>
+                          Cảm giác như:
+                          <b className="mx-2">
+                            {(weatherData.main && weatherData.main.feels_like) || "~"}
+                          </b>
+                        </ListGroupItem>
+                        <ListGroupItem>
+                          Nhiệt độ cao nhất:
+                          <b className="mx-2">
+                            {(weatherData.main && weatherData.main.temp_max) || "~"}
+                          </b>
+                        </ListGroupItem>
+                        <ListGroupItem>
+                          Nhiệt độ thấp nhất:
+                          <b className="mx-2">
+                            {(weatherData.main && weatherData.main.temp_min) || "~"}
+                          </b>
+                        </ListGroupItem>
+                        <ListGroupItem>
+                          Độ ẩm:
+                          <b className="mx-2">
+                            {(weatherData.main && weatherData.main.humidity) || "~"}
+                          </b>
+                        </ListGroupItem>
+                        <ListGroupItem>
+                          Tốc độ gió:
+                          <b className="mx-2">
+                            {(weatherData.wind && weatherData.wind.speed) || "~"}
+                          </b>
+                        </ListGroupItem>
+                        <ListGroupItem>
+                          Lượng mưa:
+                          <b className="mx-2">
+                            {(weatherData.rain && weatherData.rain["1h"]) || "~"}
+                          </b>
+                        </ListGroupItem>
+                      </ListGroup>
+                    )}
+                  </div>
+
                 </MapContainer>
               )) || <h1>Detecting...</h1>}
             </Row>
