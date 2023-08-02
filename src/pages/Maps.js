@@ -194,7 +194,14 @@ export default function Maps() {
           lat: position.coords.latitude,
           lng: position.coords.longitude
         });
+
+        setCurrentLocation({
+          lat: position.coords.latitude,
+          lng: position.coords.longitude
+        });
+
         setAlertState({});
+        console.log('detected location...');
       });
     }
   }
