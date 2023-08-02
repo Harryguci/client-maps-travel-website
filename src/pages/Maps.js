@@ -344,6 +344,11 @@ export default function Maps() {
                         lat: city.points[0][0],
                         lng: city.points[0][1],
                       });
+                      setCurrentLocation({
+                        lat: city.points[0][0],
+                        lng: city.points[0][1],
+                      });
+                      
                       setPoints(city.points || hanoipoints);
                       window.scrollTo(0, 0);
                     }}
