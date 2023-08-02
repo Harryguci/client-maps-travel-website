@@ -1,9 +1,9 @@
-import { useState } from "react";
+import { useState, memo } from "react";
 import { Marker, Popup, useMapEvents } from "react-leaflet";
-import markerIconPng from "leaflet/dist/images/marker-icon.png";
+// import markerIconPng from "leaflet/dist/images/marker-icon.png";
 import { Icon } from "leaflet";
 import TooltipCircle from "../components/ToolTipCircle";
-export default function LocationMarker({
+function LocationMarker({
   center,
   points,
   setPoints,
@@ -11,7 +11,6 @@ export default function LocationMarker({
   setAlertState,
 }) {
   const [position, setPosition] = useState(center);
-
   const map = useMapEvents({
     click(e) {
       setPosition(e.latlng);
@@ -43,20 +42,19 @@ export default function LocationMarker({
   });
 
   return position === null ? null : (
-    <>
-      {/* <TooltipCircle center={position} radius={100} /> */}
-      <Marker
-        position={position}
-        icon={
-          new Icon({
-            iconUrl: './marker-location-yellow.png',
-            iconSize: [41, 41],
-            iconAnchor: [12, 41],
-          })
-        }
-      >
-        <Popup>You are here</Popup>
-      </Marker>
-    </>
+    <Marker
+      position={position}
+      icon={
+        new Icon({
+          iconUrl: './marker-location-yellow.png',
+          iconSize: [41, 41],
+          iconAnchor: [12, 41],
+        })
+      }
+    >
+      <Popup>You are here</Popup>
+    </Marker>
   );
 }
+
+export default memo(LocationMarker)

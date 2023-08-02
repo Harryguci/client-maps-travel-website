@@ -1,14 +1,14 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, memo, useCallback } from 'react';
 import '../Assets/SCSS/imageBox.scss';
 
-export default function ImageBox({ url, description, hide }) {
+function ImageBox({ url, description, hide }) {
 
-    const handleHide = () => {
+    const handleHide = useCallback(() => {
         if (hide) {
             document.querySelector('.image-box').classList.add('hidden');
             setTimeout(() => hide(), 300);
         }
-    }
+    }, [hide]);
 
     return (
         <>
@@ -22,3 +22,5 @@ export default function ImageBox({ url, description, hide }) {
         </>
     )
 }
+
+export default memo(ImageBox);

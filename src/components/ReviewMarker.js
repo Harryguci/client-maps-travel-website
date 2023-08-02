@@ -1,15 +1,14 @@
-import { useState } from "react";
+import { useState, memo } from "react";
 import { Marker, Popup, useMapEvents } from "react-leaflet";
 import { Icon } from "leaflet";
 import '../Assets/SCSS/reviewMarker.scss';
 import ImageBox from "./ImageBox";
 // import TooltipCircle from "../components/ToolTipCircle";
-export default function LocationMarker({
+function LocationMarker({
     review
 }, key) {
-    const [position, setPosition] = useState(review.location);
+    const [position] = useState(review.location);
     const [imageBox, setImageBox] = useState({});
-
     return position === null ? null : (
         <>
             {
@@ -39,3 +38,6 @@ export default function LocationMarker({
         </>
     );
 }
+
+
+export default memo(LocationMarker);

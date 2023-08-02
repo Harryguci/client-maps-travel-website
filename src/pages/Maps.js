@@ -125,7 +125,30 @@ export default function Maps() {
       .catch((error) => console.log(error));
   }, []);
 
-  useEffect(() => console.log('[Reviews]', reviews), [reviews]);
+  useEffect(() => {
+    if (navigator.geolocation) {
+      setAlertState({
+        variant: "success",
+        content: "Detecting location...",
+      });
+      window.scrollTo(0, 0);
+
+      navigator.geolocation.getCurrentPosition(function (position) {
+        setCenter({
+          lat: position.coords.latitude,
+          lng: position.coords.longitude
+        });
+
+        setCurrentLocation({
+          lat: position.coords.latitude,
+          lng: position.coords.longitude
+        });
+
+        setAlertState({});
+        console.log('detected location...');
+      });
+    }
+  }, []);
 
   useEffect(() => {
     fetch(
@@ -205,8 +228,6 @@ export default function Maps() {
       });
     }
   }
-
-  // useEffect(() => console.log(alertState), [alertState]);
 
   return (
     <>
