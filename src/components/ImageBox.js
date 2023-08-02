@@ -14,7 +14,18 @@ function ImageBox({ url, description, hide }) {
         <>
             <div className='background-dark' onClick={handleHide}></div>
             <div className='center image-box'>
-                <div className='thumbnail'>
+                <div className='thumbnail'
+                    style={
+                        window.innerWidth > 800 ?
+                            {
+                                width: 'auto',
+                                height: '70vh'
+                            }
+                            : {
+                                width: '90vw',
+                                height: 'auto'
+                            }
+                    }>
                     <img src={url} alt='harryguci' />
                 </div>
                 <p className='description'>{description}</p>

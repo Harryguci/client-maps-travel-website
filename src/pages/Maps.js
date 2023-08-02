@@ -33,6 +33,7 @@ import LayerTerm from "../components/LayerTerm";
 import attributions from "../helpers/osmProvider";
 import ToolTipPoly from "../components/ToolTipPoly";
 import "bootstrap/dist/css/bootstrap.css";
+
 import {
   // eslint-disable-next-line no-unused-vars
   Button,
@@ -49,7 +50,7 @@ import {
 import convertVNtoEng from "../helpers/convertVNtoEng";
 import ImageForm from "../components/ImageForm";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faTurnUp } from "@fortawesome/free-solid-svg-icons";
+import { faTurnUp, faClose } from "@fortawesome/free-solid-svg-icons";
 import ReviewMarker from '../components/ReviewMarker';
 
 const hanoipoints = [
@@ -241,17 +242,18 @@ export default function Maps() {
           boxShadow: "5px 5px 30px rgba(0,0,0,0.3)",
         }}
       >
-        <div className="control-information-box d-flex gap-1">
+        <div className="control-information-box d-flex gap-1 justify-content-center">
           <button
             className="custom-button"
             onClick={(e) => setShowInfoBox((prev) => !prev)}
-            style={window.innerWidth > 800 ? { width: "100%" } : {}}
+            style={window.innerWidth > 800 ? { width: "100%" } : { flex: '0 0 50%' }}
           >
-            {showInforBox ? "Close Info Box" : "Info Box"}
+            {showInforBox ? <FontAwesomeIcon icon={faClose} /> : "Info Box"}
           </button>
           {window.innerWidth < 800 && (
             <button
               className="custom-button"
+              style={{ flex: '0 0 50%' }}
               onClick={(e) => window.scrollTo(0, window.innerHeight)}
             >
               City List

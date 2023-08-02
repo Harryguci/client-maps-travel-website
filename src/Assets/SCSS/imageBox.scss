@@ -3,14 +3,16 @@
   animation-duration: 0.3s;
   animation-timing-function: ease-in-out;
   animation-fill-mode: both;
+  z-index: 2000;
 
   .thumbnail {
     display: flex;
     justify-content: center;
     align-items: center;
-    width: 90vw;
+
     max-width: 1000px;
-    height: auto;
+    max-height: 1000px;
+
     overflow: hidden;
     border-radius: 10px 10px 0 0;
   }
