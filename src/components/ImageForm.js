@@ -32,8 +32,8 @@ export default function ImageForm({ location }) {
 
     return (
         <Form
-            // action='https://server-maps-travel-website.onrender.com/send-image'
-            action={`http://localhost:3001/send-image`} // test server
+            action='https://server-maps-travel-website.onrender.com/send-image'
+            // action={`http://localhost:3001/send-image`} // test server
             method='POST'
             enctype="multipart/form-data"
             className='image-form'
