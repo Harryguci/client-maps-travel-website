@@ -2,7 +2,7 @@ import { useState, useEffect, useMemo, useCallback } from 'react';
 import { Form, FormControl, Row } from 'react-bootstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faTurnUp, faClose } from '@fortawesome/free-solid-svg-icons';
-import { useMap } from 'react-leaflet';
+import { useMap, useMapEvents } from 'react-leaflet';
 
 function MapsControl({
     cites,
@@ -10,6 +10,7 @@ function MapsControl({
     setCurrentLocation,
     setPoints,
     hanoipoints,
+    showPolygon,
     setShowPolygon,
     newCityState,
     setNewCityState,
@@ -19,6 +20,7 @@ function MapsControl({
 }) {
 
     const map = useMap();
+
     const detectCurrentLocation = (e) => {
         if (navigator.geolocation) {
 
@@ -40,7 +42,7 @@ function MapsControl({
     const handleHide = useCallback(() => {
         if (hide) hide();
     }, [hide]);
-    
+
     return (
         <>
             <div className='background-dark' onClick={handleHide}></div>
@@ -81,20 +83,20 @@ function MapsControl({
                                 {city.name}
                             </button>
                         ))}
+                </Row>
+                <Row className="d-flex justify-content-center my-5 gap-2">
                     <button
                         className="custom-button danger"
                         onClick={(e) => setPoints([])}
                     >
-                        Reset
+                        Reset Poly
                     </button>
-                </Row>
-                <Row className="d-flex justify-content-center my-5 gap-2">
-                    <Form.Check // prettier-ignore
-                        type="switch"
-                        id="custom-switch"
-                        label="Show poly"
-                        onChange={(e) => setShowPolygon((prev) => !prev)}
-                    />
+                    <button // prettier-ignore
+                        className='custom-button'
+                        onClick={(e) => setShowPolygon((prev) => !prev)}
+                    >
+                        Toggle Poly
+                    </button>
                     <FormControl
                         type="text"
                         style={{ maxWidth: 500 }}
@@ -107,7 +109,7 @@ function MapsControl({
                         className="custom-button primary"
                         onClick={handleAddPlace}
                     >
-                        Add
+                        Add City
                     </button>
                     <button
                         className="custom-button"
@@ -122,18 +124,6 @@ function MapsControl({
                         <p>[-][+] change zoom</p>
                     </div>
                 </Row>
-                {window.innerWidth < 800 && (
-                    <Row>
-                        <div>
-                            <button
-                                className="custom-button"
-                                onClick={(e) => window.scrollTo(0, 0)}
-                            >
-                                <FontAwesomeIcon icon={faTurnUp} />
-                            </button>
-                        </div>
-                    </Row>
-                )}
             </div>
         </>
     )

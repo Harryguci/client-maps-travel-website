@@ -246,6 +246,8 @@ export default function Maps() {
                     setPoints={setPoints}
                     setCurrentLocation={setCurrentLocation}
                     setAlertState={setAlertState}
+                    enablePoly={showPolygon}
+                    showMapsControl={showMapsControl}
                   />
 
                   {reviews && reviews.length &&
@@ -265,6 +267,7 @@ export default function Maps() {
                     setCurrentLocation={setCurrentLocation}
                     setPoints={setPoints}
                     hanoipoints={hanoipoints}
+                    showPolygon={showPolygon}
                     setShowPolygon={setShowPolygon}
                     newCityState={newCityState}
                     setNewCityState={setNewCityState}

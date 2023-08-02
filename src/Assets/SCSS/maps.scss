@@ -13,9 +13,12 @@
   top: 1rem;
 
   @media (max-width: 767px) {
-    bottom: 1.5rem;
     font-size: 0.7rem;
-    top: auto !important;
+
+    .list-group-item {
+      padding: 0.4rem 0.7rem;
+      font-size: 0.7rem !important;
+    }
   }
 
   .list-group-item {

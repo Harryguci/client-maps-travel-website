@@ -6,17 +6,21 @@ import TooltipCircle from "../components/ToolTipCircle";
 function LocationMarker({
   center,
   points,
+  enablePoly,
   setPoints,
   setCurrentLocation,
   setAlertState,
+  showMapsControl,
 }) {
   const [position, setPosition] = useState(center);
 
   const map = useMapEvents({
     click(e) {
-      setPosition(e.latlng);
-      setCurrentLocation(e.latlng);
-      setPoints((prev) => [...prev, [e.latlng.lat, e.latlng.lng]]);
+      if (!showMapsControl) {
+        setPosition(e.latlng);
+        setCurrentLocation(e.latlng);
+        setPoints((prev) => [...prev, [e.latlng.lat, e.latlng.lng]]);
+      }
     },
     keypress(e) {
       if (
