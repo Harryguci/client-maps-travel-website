@@ -19,7 +19,6 @@ export default function ImageForm({ location }) {
     useEffect(() => {
         if (fileState && fileState.name) {
             setPreviewUrl(URL.createObjectURL(fileState));
-            // document.querySelector(`input[type="file"]`).value = null;
         }
 
         return () => {
