@@ -34,11 +34,9 @@ import attributions from "../helpers/osmProvider";
 import ToolTipPoly from "../components/ToolTipPoly";
 import "bootstrap/dist/css/bootstrap.css";
 import MapsControl from "../components/MapsControl";
-
+import useFetch from "../helpers/useFetch";
 
 import {
-  // eslint-disable-next-line no-unused-vars
-  Button,
   ListGroup,
   ListGroupItem,
   Container,
@@ -171,6 +169,17 @@ export default function Maps() {
       .catch((err) => console.log(err));
   }, [currentLocation]);
 
+  // useEffect(() => {
+  //   fetch('https://server-maps-travel-website.onrender.com/get-image')
+  //     .then((response) => response.json())
+  //     .then((data) => setReviews(data))
+  //     .catch((error) => console.log(error));
+  // }, [currentLocation]);
+
+  const [showMapsControl, setShowMapsControl] = useState(() => {
+    return !(window.innerWidth < 768);
+  });
+
   const handleAddPlace = async (e) => {
     cites.push({
       id: createId(newCityState),
@@ -207,11 +216,7 @@ export default function Maps() {
     }
   };
 
-  const [showMapsControl, setShowMapsControl] = useState(() => {
-    return !(window.innerWidth < 768);
-  });
-
-  const DisplayReviews = useCallback(() => (
+  const DisplayReviews = useMemo(() => (
     <>
       {reviews && reviews.length &&
         reviews.map((review) => (
@@ -220,44 +225,6 @@ export default function Maps() {
       }
     </>
   ), [reviews])
-
-  const displayMap = useMemo(() => {
-    console.log('Update Maps', reviews);
-
-    return (
-      <MapContainer
-        key={JSON.stringify([center.lat, center.lng])}
-        center={center}
-        ref={setMap}
-        zoom={13}
-        scrollWheelZoom={false}
-        style={{ height: "100vh", position: "relative", zIndex: 5 }}
-      >
-        <LocationMarker
-          center={center}
-          points={points}
-          currentLocation={currentLocation}
-          setPoints={setPoints}
-          setAfterLocation={setAfterLocation}
-          setCurrentLocation={setCurrentLocation}
-          setAlertState={setAlertState}
-          enablePoly={showPolygon}
-          showMapsControl={showMapsControl}
-        />
-
-        <DisplayReviews />
-
-        {/* Display Maps */}
-        <TileLayer {...attributions} />
-
-        {showPolygon && points && points.length && (
-          <ToolTipPoly points={points} />
-        )}
-
-      </MapContainer>
-    )
-  }, [center, currentLocation, points, reviews, showMapsControl, showPolygon]);
-
 
   return (
     <>
@@ -353,7 +320,7 @@ export default function Maps() {
       >
         <FontAwesomeIcon icon={faBars} />
       </button>}
-      
+
       {showImageForm && ( // disable prettier 
         <ImageForm location={currentLocation} hide={() => setShowImageForm(false)} />
       )}
@@ -374,7 +341,36 @@ export default function Maps() {
               </Alert>
             )}
             <Row>
-              {displayMap}
+              <MapContainer
+                key={JSON.stringify([center.lat, center.lng])}
+                center={center}
+                ref={setMap}
+                zoom={13}
+                scrollWheelZoom={false}
+                style={{ height: "100vh", position: "relative", zIndex: 5 }}
+              >
+                <LocationMarker
+                  center={center}
+                  points={points}
+                  currentLocation={currentLocation}
+                  setPoints={setPoints}
+                  setAfterLocation={setAfterLocation}
+                  setCurrentLocation={setCurrentLocation}
+                  setAlertState={setAlertState}
+                  enablePoly={showPolygon}
+                  showMapsControl={showMapsControl}
+                />
+
+                {DisplayReviews}
+
+                {/* Display Maps */}
+                <TileLayer {...attributions} />
+
+                {showPolygon && points && points.length && (
+                  <ToolTipPoly points={points} />
+                )}
+
+              </MapContainer>
             </Row>
           </Col>
         </Row>
