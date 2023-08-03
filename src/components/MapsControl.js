@@ -49,7 +49,11 @@ function MapsControl({
             </button>
             <div className="maps-section__control p-4" style={{ zIndex: 1000 }}>
                 <Row>
-                    <h3 className="brand">Harryguci</h3>
+                    <h3 className="brand">
+                        <div className='thumbnail d-flex justify-content-center'>
+                            <img src={'./harryguci-logo-white.png'} alt='HARRYGUCI' width={50} height={50} />
+                        </div>
+                    </h3>
                 </Row>
                 <Row className="my-2 d-flex justify-content-center gap-2">
                     <button
