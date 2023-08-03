@@ -11,6 +11,8 @@
   position: absolute;
   right: 1rem;
   top: 1rem;
+  box-shadow: 5px 5px 30px rgba(0, 0, 0, 0.3);
+  z-index: 2000;
 
   @media (max-width: 767px) {
     font-size: 0.7rem;
@@ -33,6 +35,9 @@
 }
 
 .maps-section {
+  z-index: 5;
+  position: relative;
+  
   > .row {
     flex-direction: row;
   }

@@ -194,26 +194,17 @@ export default function Maps() {
 
   return (
     <>
-      <div
-        className="information-box"
-        style={{
-          position: "absolute",
-          right: "1rem",
-          top: "1rem",
-          zIndex: 2000,
-          boxShadow: "5px 5px 30px rgba(0,0,0,0.3)",
-        }}
-      >
+      <div className="information-box">
         <div className="control-information-box d-flex gap-1 justify-content-center">
           <button
             className="custom-button"
             onClick={(e) => setShowInfoBox((prev) => !prev)}
             style={{ width: "100%" }}
           >
-            {showInforBox ? <FontAwesomeIcon icon={faClose} /> : "Info Box"}
+            {!showMapsControl && !showImageForm && showInforBox ? <FontAwesomeIcon icon={faClose} /> : "Info Box"}
           </button>
         </div>
-        {showInforBox && (
+        {!showMapsControl && !showImageForm && showInforBox && (
           <ListGroup>
             <ListGroupItem>
               Tỉnh / Thành phố:
@@ -291,11 +282,7 @@ export default function Maps() {
         <ImageForm location={currentLocation} hide={() => setShowImageForm(false)} />
       )}
 
-      <Container
-        fluid
-        className="maps-section position-relative"
-        style={{ zIndex: 5 }}
-      >
+      <Container fluid>
         <Row>
           <Col className="col-12 maps-section__main">
             {alertState && alertState.content && (
@@ -310,11 +297,12 @@ export default function Maps() {
               <MapContainer
                 key={JSON.stringify([center.lat, center.lng])}
                 center={center}
-                ref={setMap}
+                ref={setMap} // [Required for using map at the external element]
                 zoom={13}
                 scrollWheelZoom={false}
                 style={{ height: "100vh", position: "relative", zIndex: 5 }}
               >
+                {/* User Location Marker */}
                 <LocationMarker
                   center={center}
                   points={points}
@@ -327,6 +315,7 @@ export default function Maps() {
                   showMapsControl={showMapsControl}
                 />
 
+                {/* Display review Markers */}
                 {DisplayReviews}
 
                 {/* Display Maps */}
@@ -335,7 +324,6 @@ export default function Maps() {
                 {showPolygon && points && points.length && (
                   <ToolTipPoly points={points} />
                 )}
-
               </MapContainer>
             </Row>
           </Col>
