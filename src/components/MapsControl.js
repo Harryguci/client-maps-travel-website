@@ -1,4 +1,4 @@
-import { useCallback } from 'react';
+import { useCallback, useMemo } from 'react';
 import { FormControl, Row } from 'react-bootstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faClose } from '@fortawesome/free-solid-svg-icons';
@@ -18,14 +18,13 @@ function MapsControl({
     hide,
     map
 }) {
-    const detectCurrentLocation = (e) => {
+    const detectCurrentLocation = useCallback((e) => {
         if (navigator.geolocation) {
             window.scrollTo(0, 0);
-
             // detect real location
             map.locate();
         }
-    }
+    }, [map]);
 
     const handleHide = useCallback(() => {
         try {
@@ -36,6 +35,24 @@ function MapsControl({
         if (hide)
             setTimeout(() => hide(), 300);
     }, [hide]);
+
+    const brandElement = useMemo(() => (
+        <div className="brand">
+            <div className='thumbnail d-flex justify-content-center'>
+                <img src={'./harryguci-logo-white.png'} alt='HARRYGUCI' width={50} height={50} />
+            </div>
+        </div>
+    ), []);
+
+    const currentLocationBtn = useMemo(() => (
+        <button
+            className="custom-button danger"
+            onClick={detectCurrentLocation}
+        >
+            Current Location
+        </button>
+    ),
+        [detectCurrentLocation]);
 
     return (
         <>
@@ -49,19 +66,10 @@ function MapsControl({
             </button>
             <div className="maps-section__control p-4" style={{ zIndex: 1000 }}>
                 <Row>
-                    <h3 className="brand">
-                        <div className='thumbnail d-flex justify-content-center'>
-                            <img src={'./harryguci-logo-white.png'} alt='HARRYGUCI' width={50} height={50} />
-                        </div>
-                    </h3>
+                    {brandElement}
                 </Row>
                 <Row className="my-2 d-flex justify-content-center gap-2">
-                    <button
-                        className="custom-button danger"
-                        onClick={detectCurrentLocation}
-                    >
-                        Current Location
-                    </button>
+                    {currentLocationBtn}
                     {cites &&
                         cites.length &&
                         cites.map((city) => (
