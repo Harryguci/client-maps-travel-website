@@ -15,22 +15,25 @@ function ImageBox({ user, url, description, hide }) {
         , [handleHide]
     );
 
+    const styleThumbnail = useMemo(() =>
+        window.innerWidth > 800 ?
+            {
+                width: 'auto',
+                height: '70vh'
+            }
+            : {
+                width: '90vw',
+                height: 'auto'
+            }
+        , []
+    )
+
     return (
         <>
             {bgDark}
             <div className='center image-box'>
                 <div className='thumbnail'
-                    style={
-                        window.innerWidth > 800 ?
-                            {
-                                width: 'auto',
-                                height: '70vh'
-                            }
-                            : {
-                                width: '90vw',
-                                height: 'auto'
-                            }
-                    }>
+                    style={styleThumbnail}>
                     <img src={url} alt='harryguci' />
                 </div>
                 <p className='description'>
