@@ -155,20 +155,22 @@ export default function Maps() {
 
     setPoints([]);
     if (newCityState && points && points.length) {
-      await fetch("https://server-maps-travel-website.onrender.com/points/data", {
-        method: "POST",
-        mode: "cors", // no-cors, *cors, same-origin
-        cache: "no-cache", // *default, no-cache, reload, force-cache, only-if-cached
-        credentials: "same-origin", // include, *same-origin, omit
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          id: createId(newCityState),
-          name: newCityState,
-          points: points,
-        }),
-      })
+      // await fetch("https://server-maps-travel-website.onrender.com/points/data", 
+      await fetch("http://localhost:3001/points/data",
+        {
+          method: "POST",
+          mode: "cors", // no-cors, *cors, same-origin
+          cache: "no-cache", // *default, no-cache, reload, force-cache, only-if-cached
+          credentials: "same-origin", // include, *same-origin, omit
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            id: createId(newCityState),
+            name: newCityState,
+            points: points,
+          }),
+        })
         .then((response) => response.json())
         .then((data) => {
           if (data.error) {

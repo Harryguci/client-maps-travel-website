@@ -87,7 +87,7 @@ function MapsControl({
                     </button>
                     <button // prettier-ignore
                         className='custom-button'
-                        onClick={(e) => setShowPolygon((prev) => !prev)}
+                        onClick={(e) => { setShowPolygon((prev) => !prev); setPoints([]) }}
                     >
                         Toggle Poly
                     </button>
