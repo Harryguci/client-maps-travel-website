@@ -46,4 +46,4 @@ function LocationMarker({
 }
 
 
-export default memo(LocationMarker);
+export default LocationMarker;

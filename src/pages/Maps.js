@@ -41,14 +41,12 @@ import {
   Button,
   ListGroup,
   ListGroupItem,
-  FormControl,
   Container,
   Row,
   Col,
-  Form,
   Alert,
 } from "react-bootstrap";
-// import polygonArea from "../helpers/polygonArea";
+
 import convertVNtoEng from "../helpers/convertVNtoEng";
 import ImageForm from "../components/ImageForm";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -213,45 +211,52 @@ export default function Maps() {
     return !(window.innerWidth < 768);
   });
 
-  const handleClickShowMenuBtn = (e) => {
-    console.log(afterLocation, currentLocation);
-    setCurrentLocation(afterLocation);
-  }
-
-  const displayMap = useMemo(() => (
-    <MapContainer
-      key={JSON.stringify([center.lat, center.lng])}
-      center={center}
-      ref={setMap}
-      zoom={13}
-      scrollWheelZoom={false}
-      style={{ height: "100vh", position: "relative", zIndex: 5 }}
-    >
-      <LocationMarker
-        center={center}
-        points={points}
-        currentLocation={currentLocation}
-        setPoints={setPoints}
-        setAfterLocation={setAfterLocation}
-        setCurrentLocation={setCurrentLocation}
-        setAlertState={setAlertState}
-        enablePoly={showPolygon}
-        showMapsControl={showMapsControl}
-      />
-
+  const DisplayReviews = useCallback(() => (
+    <>
       {reviews && reviews.length &&
-        (reviews.map((review) => (
+        reviews.map((review) => (
           <ReviewMarker key={review.id} review={review} />
-        )))
+        ))
       }
+    </>
+  ), [reviews])
 
-      <TileLayer {...attributions} />
-      {showPolygon && points && points.length && (
-        <ToolTipPoly points={points} />
-      )}
+  const displayMap = useMemo(() => {
+    console.log('Update Maps', reviews);
 
-    </MapContainer>
-  ), [center, currentLocation, points, reviews, showMapsControl, showPolygon]);
+    return (
+      <MapContainer
+        key={JSON.stringify([center.lat, center.lng])}
+        center={center}
+        ref={setMap}
+        zoom={13}
+        scrollWheelZoom={false}
+        style={{ height: "100vh", position: "relative", zIndex: 5 }}
+      >
+        <LocationMarker
+          center={center}
+          points={points}
+          currentLocation={currentLocation}
+          setPoints={setPoints}
+          setAfterLocation={setAfterLocation}
+          setCurrentLocation={setCurrentLocation}
+          setAlertState={setAlertState}
+          enablePoly={showPolygon}
+          showMapsControl={showMapsControl}
+        />
+
+        <DisplayReviews />
+
+        {/* Display Maps */}
+        <TileLayer {...attributions} />
+
+        {showPolygon && points && points.length && (
+          <ToolTipPoly points={points} />
+        )}
+
+      </MapContainer>
+    )
+  }, [center, currentLocation, points, reviews, showMapsControl, showPolygon]);
 
 
   return (
@@ -327,7 +332,7 @@ export default function Maps() {
         )}
       </div>
 
-      {showMapsControl && map ? <MapsControl
+      {showMapsControl && map && !showImageForm ? <MapsControl
         cites={cites}
         setCenter={setCenter}
         setCurrentLocation={setCurrentLocation}
@@ -348,6 +353,7 @@ export default function Maps() {
       >
         <FontAwesomeIcon icon={faBars} />
       </button>}
+      
       {showImageForm && ( // disable prettier 
         <ImageForm location={currentLocation} hide={() => setShowImageForm(false)} />
       )}
