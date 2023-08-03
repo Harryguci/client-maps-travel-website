@@ -1,7 +1,8 @@
 import { useState, useEffect, useCallback } from 'react';
 import { Button, Form, FormControl, FormLabel } from 'react-bootstrap';
 import '../Assets/SCSS/imageForm.scss';
-
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faClose } from '@fortawesome/free-solid-svg-icons';
 export default function ImageForm({ location, hide }) {
     const [description, setDescription] = useState("");
     const [fileState, setFileState] = useState();
@@ -41,11 +42,17 @@ export default function ImageForm({ location, hide }) {
             <div className='background-dark' onClick={handleHide}></div>
             <Form
                 action='https://server-maps-travel-website.onrender.com/send-image'
-                // action={`http://localhost:3001/send-image`} // test server
                 method='POST'
                 enctype="multipart/form-data"
                 className='image-form center'
             >
+                <button
+                    className='close-button'
+                    style={{ position: 'absolute', top: 0, right: -10 }}
+                    onClick={handleHide}
+                >
+                    <FontAwesomeIcon icon={faClose} style={{ fontSize: '1rem' }} />
+                </button>
                 <h2 className='text-center mb-4'>Thêm ảnh</h2>
                 <div>
                     <FormControl // disabled prettier

@@ -16,26 +16,15 @@ function MapsControl({
     setNewCityState,
     handleAddPlace,
     setShowImageForm,
-    hide
+    hide,
+    map
 }) {
-
-    const map = useMap();
-
     const detectCurrentLocation = (e) => {
         if (navigator.geolocation) {
-
             window.scrollTo(0, 0);
 
-            navigator.geolocation.getCurrentPosition(function (position) {
-                map.flyTo({
-                    lat: position.coords.latitude,
-                    lng: position.coords.longitude
-                }, map.getZoom());
-                setCurrentLocation({
-                    lat: position.coords.latitude,
-                    lng: position.coords.longitude
-                });
-            });
+            // detect real location
+            map.locate();
         }
     }
 

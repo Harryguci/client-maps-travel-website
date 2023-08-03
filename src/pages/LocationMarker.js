@@ -7,8 +7,10 @@ function LocationMarker({
   center,
   points,
   enablePoly,
+  currentLocation,
   setPoints,
   setCurrentLocation,
+  setAfterLocation,
   setAlertState,
   showMapsControl,
 }) {
@@ -16,8 +18,10 @@ function LocationMarker({
 
   const map = useMapEvents({
     click(e) {
+      console.log(e.target);
       if (!showMapsControl) {
         setPosition(e.latlng);
+        setAfterLocation(currentLocation);
         setCurrentLocation(e.latlng);
         setPoints((prev) => [...prev, [e.latlng.lat, e.latlng.lng]]);
       }
