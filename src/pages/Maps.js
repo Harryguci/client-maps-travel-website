@@ -155,8 +155,8 @@ export default function Maps() {
 
     setPoints([]);
     if (newCityState && points && points.length) {
-      // await fetch("https://server-maps-travel-website.onrender.com/points/data", 
-      await fetch("http://localhost:3001/points/data",
+      await fetch("https://server-maps-travel-website.onrender.com/points/data",
+        // await fetch("http://localhost:3001/points/data",
         {
           method: "POST",
           mode: "cors", // no-cors, *cors, same-origin
