@@ -1,4 +1,4 @@
-import { useState, memo, useMemo, useCallback } from "react";
+import { useState, useMemo, useCallback, memo } from "react";
 import { Marker, Popup } from "react-leaflet";
 import { Icon } from "leaflet";
 import '../Assets/SCSS/reviewMarker.scss';
@@ -7,22 +7,33 @@ import ImageBox from "./ImageBox";
 function LocationMarker({
     review
 }, key) {
-    const [position] = useState(review.location);
-    const [imageBox, setImageBox] = useState({});
+    const position = useMemo(() => review.location, [review.location]);
+
+    const [showImageBox, setShowImageBox] = useState(false);
+
     const imgData = useMemo(
-        () => ({ url: 'https://server-maps-travel-website.onrender.com' + review.image.url, description: review.description }),
+        () => ({
+            url: 'https://server-maps-travel-website.onrender.com' + review.image.url,
+            description: review.description
+        }),
         [review.description, review.image.url]);
 
-    const hideImageBox = useCallback(() => setImageBox({}), []);
+    const hideImageBox = useCallback(() => {
+        setShowImageBox(false);
+    }, []);
+
+    const ImgBox = useCallback(
+        () =>
+        (<ImageBox
+            url={imgData.url}
+            description={imgData.description}
+            hide={hideImageBox}
+        />)
+        , [hideImageBox, imgData.description, imgData.url])
 
     return position === null ? null : (
         <>
-            {
-                imageBox && imageBox.url &&
-                (
-                    <ImageBox url={imageBox.url} description={imageBox.description} hide={hideImageBox} />
-                )
-            }
+            {showImageBox && (<ImgBox />)}
             <Marker
                 key={key}
                 position={position}
@@ -36,8 +47,16 @@ function LocationMarker({
                 className={'review-marker'}
             >
                 <Popup>
-                    <div className="thumbnail" onClick={e => setImageBox(imgData)}>
-                        <img src={'https://server-maps-travel-website.onrender.com' + review.image.url} alt="Harryguci" />
+                    <div
+                        className="thumbnail position-relative"
+                        onClick={e => setShowImageBox(true)}
+                    >
+                        <div className="center fw-bold z-0">...</div>
+                        <img
+                            src={imgData.url}
+                            style={{ zIndex: 1 }}
+                            alt="Harryguci"
+                        />
                     </div>
                 </Popup>
             </Marker>
@@ -46,4 +65,4 @@ function LocationMarker({
 }
 
 
-export default LocationMarker;
+export default memo(LocationMarker);

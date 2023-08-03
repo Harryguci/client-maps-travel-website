@@ -3,6 +3,7 @@ import { Button, Form, FormControl, FormLabel } from 'react-bootstrap';
 import '../Assets/SCSS/imageForm.scss';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faClose } from '@fortawesome/free-solid-svg-icons';
+
 export default function ImageForm({ location, hide }) {
     const [description, setDescription] = useState("");
     const [fileState, setFileState] = useState();

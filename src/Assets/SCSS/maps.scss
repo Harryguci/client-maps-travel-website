@@ -39,9 +39,24 @@
 
   &__control {
     background: #ffffff;
-    height: 100%;
+    position: fixed;
+    left: 0;
+    top: 0;
+    height: 100vh;
     width: 50%;
     max-width: 200px;
+    overflow-y: auto;
+
+    transition: all 0.3s ease-in-out;
+
+    animation-name: show-menu-control;
+    animation-duration: 0.3s;
+    animation-fill-mode: both;
+    animation-timing-function: ease-in-out;
+  }
+
+  &__control.hidden {
+    animation-name: hide-menu-control;
   }
 
   &__main {
@@ -51,6 +66,28 @@
   @media (max-width: 767px) {
     > .row {
       flex-direction: column-reverse;
+    }
+  }
+
+  @keyframes show-menu-control {
+    0% {
+      opacity: 0;
+      transform: translate(-50%, 0);
+    }
+    100% {
+      opacity: 1;
+      transform: translate(0, 0);
+    }
+  }
+
+  @keyframes hide-menu-control {
+    0% {
+      opacity: 1;
+      transform: translate(0, 0);
+    }
+    100% {
+      opacity: 0;
+      transform: translate(-50%, 0);
     }
   }
 }
@@ -66,10 +103,10 @@
 }
 
 .background-dark {
-  position: absolute;
+  position: fixed;
   z-index: 500;
-  width: 100%;
-  height: 100%;
+  width: 100vw;
+  height: 100vh;
   top: 0;
   left: 0;
   background-color: rgba(0, 0, 0, 0.2);

@@ -1,40 +1,13 @@
 // eslint-disable-next-line no-unused-vars
 import React, { useState, useEffect, useLayoutEffect, useMemo, useCallback } from "react";
-// eslint-disable-next-line no-unused-vars
-import { MapContainer, TileLayer, useMap, useMapEvents } from "react-leaflet";
+import { MapContainer, TileLayer } from "react-leaflet";
 import "leaflet/dist/leaflet.css";
 import "../Assets/SCSS/maps.scss";
-import {
-  // eslint-disable-next-line no-unused-vars
-  Circle,
-  // eslint-disable-next-line no-unused-vars
-  CircleMarker,
-  // eslint-disable-next-line no-unused-vars
-  Popup,
-  // eslint-disable-next-line no-unused-vars
-  Rectangle,
-  // eslint-disable-next-line no-unused-vars
-  Tooltip,
-  // eslint-disable-next-line no-unused-vars
-  LayersControl,
-  // eslint-disable-next-line no-unused-vars
-  Marker,
-  // eslint-disable-next-line no-unused-vars
-  LayerGroup,
-  // eslint-disable-next-line no-unused-vars
-  FeatureGroup,
-} from "react-leaflet";
-
-// eslint-disable-next-line no-unused-vars
-import TooltipCircle from "../components/ToolTipCircle";
 import LocationMarker from "./LocationMarker";
-// eslint-disable-next-line no-unused-vars
-import LayerTerm from "../components/LayerTerm";
 import attributions from "../helpers/osmProvider";
 import ToolTipPoly from "../components/ToolTipPoly";
 import "bootstrap/dist/css/bootstrap.css";
 import MapsControl from "../components/MapsControl";
-import useFetch from "../helpers/useFetch";
 
 import {
   ListGroup,
@@ -168,13 +141,6 @@ export default function Maps() {
       })
       .catch((err) => console.log(err));
   }, [currentLocation]);
-
-  // useEffect(() => {
-  //   fetch('https://server-maps-travel-website.onrender.com/get-image')
-  //     .then((response) => response.json())
-  //     .then((data) => setReviews(data))
-  //     .catch((error) => console.log(error));
-  // }, [currentLocation]);
 
   const [showMapsControl, setShowMapsControl] = useState(() => {
     return !(window.innerWidth < 768);

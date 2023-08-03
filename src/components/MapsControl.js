@@ -1,8 +1,7 @@
-import { useState, useEffect, useMemo, useCallback } from 'react';
-import { Form, FormControl, Row } from 'react-bootstrap';
+import { useCallback } from 'react';
+import { FormControl, Row } from 'react-bootstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faTurnUp, faClose } from '@fortawesome/free-solid-svg-icons';
-import { useMap, useMapEvents } from 'react-leaflet';
+import { faClose } from '@fortawesome/free-solid-svg-icons';
 
 function MapsControl({
     cites,
@@ -29,7 +28,13 @@ function MapsControl({
     }
 
     const handleHide = useCallback(() => {
-        if (hide) hide();
+        try {
+            document.getElementsByClassName('maps-section__control')[0].classList.add('hidden');
+        } catch (err) {
+            console.log(err);
+        }
+        if (hide)
+            setTimeout(() => hide(), 300);
     }, [hide]);
 
     return (
@@ -42,7 +47,7 @@ function MapsControl({
             >
                 <FontAwesomeIcon icon={faClose} />
             </button>
-            <div className="position-absolute maps-section__control p-4" style={{ left: 0, top: 0, zIndex: 1000 }}>
+            <div className="maps-section__control p-4" style={{ zIndex: 1000 }}>
                 <Row>
                     <h3 className="brand">Harryguci</h3>
                 </Row>
