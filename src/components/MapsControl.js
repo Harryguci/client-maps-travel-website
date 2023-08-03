@@ -87,13 +87,13 @@ function MapsControl({
                         className="custom-button danger"
                         onClick={(e) => setPoints([])}
                     >
-                        Reset Poly
+                        Reset Outline
                     </button>
                     <button // prettier-ignore
                         className='custom-button'
                         onClick={(e) => { setShowPolygon((prev) => !prev); setPoints([]) }}
                     >
-                        Toggle Poly
+                        {showPolygon ? 'Hide Outline' : 'Show Outline'}
                     </button>
                     <FormControl
                         type="text"
