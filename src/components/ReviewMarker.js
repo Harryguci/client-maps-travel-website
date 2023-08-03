@@ -1,8 +1,8 @@
 import { useState, useMemo, useCallback, memo } from "react";
 import { Marker, Popup } from "react-leaflet";
 import { Icon } from "leaflet";
-import '../Assets/SCSS/reviewMarker.scss';
 import ImageBox from "./ImageBox";
+import '../Assets/SCSS/reviewMarker.scss';
 
 function LocationMarker({
     review
@@ -25,11 +25,12 @@ function LocationMarker({
     const ImgBox = useCallback(
         () =>
         (<ImageBox
+            user={review.user}
             url={imgData.url}
             description={imgData.description}
             hide={hideImageBox}
         />)
-        , [hideImageBox, imgData.description, imgData.url])
+        , [hideImageBox, imgData.description, imgData.url, review.user])
 
     return position === null ? null : (
         <>

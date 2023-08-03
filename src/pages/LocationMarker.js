@@ -1,8 +1,8 @@
-import { useState, memo } from "react";
+import { useState } from "react";
 import { Marker, Popup, useMapEvents } from "react-leaflet";
-// import markerIconPng from "leaflet/dist/images/marker-icon.png";
 import { Icon } from "leaflet";
-import TooltipCircle from "../components/ToolTipCircle";
+// import markerIconPng from "leaflet/dist/images/marker-icon.png";
+
 function LocationMarker({
   center,
   points,
@@ -18,7 +18,7 @@ function LocationMarker({
 
   const map = useMapEvents({
     click(e) {
-      console.log(e.target);
+      // console.log(e.target);
       if (!showMapsControl) {
         setPosition(e.latlng);
         setAfterLocation(currentLocation);

@@ -1,7 +1,7 @@
-import { useState, useEffect, memo, useCallback } from 'react';
+import { memo, useMemo, useCallback } from 'react';
 import '../Assets/SCSS/imageBox.scss';
 
-function ImageBox({ url, description, hide }) {
+function ImageBox({ user, url, description, hide }) {
 
     const handleHide = useCallback(() => {
         if (hide) {
@@ -10,9 +10,15 @@ function ImageBox({ url, description, hide }) {
         }
     }, [hide]);
 
+    const bgDark = useMemo(() =>
+        (<div className='background-dark' onClick={handleHide}></div>)
+        , [handleHide]
+    );
+
     return (
         <>
-            <div className='background-dark' onClick={handleHide}></div>
+            {/* <div className='background-dark' onClick={handleHide}></div> */}
+            {bgDark}
             <div className='center image-box'>
                 <div className='thumbnail'
                     style={
@@ -28,7 +34,10 @@ function ImageBox({ url, description, hide }) {
                     }>
                     <img src={url} alt='harryguci' />
                 </div>
-                <p className='description'>{description}</p>
+                <p className='description'>
+                    <small className='fw-bold mx-2 opacity-75'>{user}</small>
+                    {description}
+                </p>
             </div>
         </>
     )

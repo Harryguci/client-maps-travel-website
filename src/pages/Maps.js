@@ -1,5 +1,4 @@
-// eslint-disable-next-line no-unused-vars
-import React, { useState, useEffect, useLayoutEffect, useMemo, useCallback } from "react";
+import React, { useState, useEffect, useMemo } from "react";
 import { MapContainer, TileLayer } from "react-leaflet";
 import "leaflet/dist/leaflet.css";
 import "../Assets/SCSS/maps.scss";
@@ -8,10 +7,9 @@ import attributions from "../helpers/osmProvider";
 import ToolTipPoly from "../components/ToolTipPoly";
 import "bootstrap/dist/css/bootstrap.css";
 import MapsControl from "../components/MapsControl";
+import WeatherInfo from "../components/WeatherInfo";
 
 import {
-  ListGroup,
-  ListGroupItem,
   Container,
   Row,
   Col,
@@ -184,7 +182,7 @@ export default function Maps() {
     }
   };
 
-  const DisplayReviews = useMemo(() => (
+  const displayReviews = useMemo(() => (
     <>
       {reviews && reviews.length &&
         reviews.map((review) => (
@@ -207,54 +205,7 @@ export default function Maps() {
           </button>
         </div>
         {!showMapsControl && !showImageForm && showInforBox && (
-          <ListGroup>
-            <ListGroupItem>
-              Tỉnh / Thành phố:
-              <b className="mx-2">{weatherData.name || "~"}</b>
-            </ListGroupItem>
-            <ListGroupItem>
-              Nhiệt độ:
-              <b className="mx-2">
-                {(weatherData.main && weatherData.main.temp) || "~"}
-              </b>
-            </ListGroupItem>
-            <ListGroupItem>
-              Cảm giác như:
-              <b className="mx-2">
-                {(weatherData.main && weatherData.main.feels_like) || "~"}
-              </b>
-            </ListGroupItem>
-            <ListGroupItem>
-              Nhiệt độ cao nhất:
-              <b className="mx-2">
-                {(weatherData.main && weatherData.main.temp_max) || "~"}
-              </b>
-            </ListGroupItem>
-            <ListGroupItem>
-              Nhiệt độ thấp nhất:
-              <b className="mx-2">
-                {(weatherData.main && weatherData.main.temp_min) || "~"}
-              </b>
-            </ListGroupItem>
-            <ListGroupItem>
-              Độ ẩm:
-              <b className="mx-2">
-                {(weatherData.main && weatherData.main.humidity) || "~"}
-              </b>
-            </ListGroupItem>
-            <ListGroupItem>
-              Tốc độ gió:
-              <b className="mx-2">
-                {(weatherData.wind && weatherData.wind.speed) || "~"}
-              </b>
-            </ListGroupItem>
-            <ListGroupItem>
-              Lượng mưa:
-              <b className="mx-2">
-                {(weatherData.rain && weatherData.rain["1h"]) || "~"}
-              </b>
-            </ListGroupItem>
-          </ListGroup>
+          <WeatherInfo weatherData={weatherData} />
         )}
       </div>
 
@@ -318,7 +269,7 @@ export default function Maps() {
                 />
 
                 {/* Display review Markers */}
-                {DisplayReviews}
+                {displayReviews}
 
                 {/* Display Maps */}
                 <TileLayer {...attributions} />
