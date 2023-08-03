@@ -93,7 +93,7 @@ function MapsControl({
                     </button>
                     <FormControl
                         type="text"
-                        style={{ maxWidth: 500 }}
+                        style={{ maxWidth: 500, padding: '1rem' }}
                         value={newCityState}
                         onChange={(e) => setNewCityState(e.target.value)}
                         placeholder="city"
