@@ -1,4 +1,8 @@
-import Maps from "./pages/Maps";
+// import Maps from "./pages/Maps";
+import React from 'react';
+
+const Maps = React.lazy(() => import('./pages/Maps'));
+
 function App() {
   return (
     <div className="App">

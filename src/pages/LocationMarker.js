@@ -1,7 +1,6 @@
-import { useState } from "react";
+import { useState, useMemo } from "react";
 import { Marker, Popup, useMapEvents } from "react-leaflet";
 import { Icon } from "leaflet";
-// import markerIconPng from "leaflet/dist/images/marker-icon.png";
 
 function LocationMarker({
   center,
@@ -50,6 +49,12 @@ function LocationMarker({
     },
   });
 
+  const popup = useMemo(
+    () =>
+      (<Popup>You are here</Popup>),
+    []
+  );
+
   return position === null ? null : (
     <Marker
       position={position}
@@ -61,7 +66,7 @@ function LocationMarker({
         })
       }
     >
-      <Popup>You are here</Popup>
+      {popup}
     </Marker>
   );
 }

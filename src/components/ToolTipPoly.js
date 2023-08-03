@@ -1,13 +1,16 @@
+import { memo } from 'react'
 import { Popup, Polygon, Tooltip } from "react-leaflet";
 
-export default function ToolTipPoly({ points }) {
+function ToolTipPoly({ points, name }) {
   return (
     <>
       {(points && points.length && (
         <Polygon pathOptions={{ color: "blue" }} positions={points}>
-          <Tooltip>Ha Noi, Viet Nam</Tooltip>
+          <Tooltip>{name || 'Viet Nam'}</Tooltip>
         </Polygon>
       )) || <Popup>Can not display</Popup>}
     </>
   );
 }
+
+export default memo(ToolTipPoly);

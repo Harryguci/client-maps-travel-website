@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect, useCallback, useMemo } from 'react';
 import { Button, Form, FormControl, FormLabel } from 'react-bootstrap';
 import '../Assets/SCSS/imageForm.scss';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -38,9 +38,15 @@ export default function ImageForm({ location, hide }) {
         }
     }, [hide]);
 
+    const bgDark = useMemo(
+        () =>
+            (<div className='background-dark' onClick={handleHide}></div>),
+        [handleHide]
+    )
+
     return (
         <>
-            <div className='background-dark' onClick={handleHide}></div>
+            {bgDark}
             <Form
                 action='https://server-maps-travel-website.onrender.com/send-image'
                 method='POST'

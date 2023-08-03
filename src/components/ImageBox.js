@@ -17,7 +17,6 @@ function ImageBox({ user, url, description, hide }) {
 
     return (
         <>
-            {/* <div className='background-dark' onClick={handleHide}></div> */}
             {bgDark}
             <div className='center image-box'>
                 <div className='thumbnail'
