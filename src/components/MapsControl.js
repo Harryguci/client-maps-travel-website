@@ -126,7 +126,7 @@ function MapsControl({
                 </Row>
                 <Row>
                     <div className="opacity-50">
-                        <p>[space] back to current location</p>
+                        {/* <p>[space] back to current location</p> */}
                         <p>[-][+] change zoom</p>
                     </div>
                 </Row>

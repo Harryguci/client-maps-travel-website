@@ -26,21 +26,22 @@ function LocationMarker({
       }
     },
     keypress(e) {
-      if (
-        e.originalEvent &&
-        e.originalEvent.charCode &&
-        e.originalEvent.charCode === 32
-      ) {
-        map.locate();
-        setAlertState({
-          variant: "success",
-          content: "Detecting location...",
-        });
+      // if (
+      //   e.originalEvent &&
+      //   e.originalEvent.charCode
+      // ) {
+      //   // map.locate();
+      //   setAlertState({
+      //     variant: "success",
+      //     content: "Detecting location...",
+      //   });
 
-        setTimeout(() => {
-          setAlertState({});
-        }, 3000);
-      }
+      //   setTimeout(() => {
+      //     setAlertState({});
+      //   }, 3000);
+
+      //   console.log(e.originalEvent.charCode);
+      // }
     },
     locationfound(e) {
       setPosition(e.latlng);
