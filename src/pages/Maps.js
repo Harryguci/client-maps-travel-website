@@ -1,6 +1,10 @@
 import React, { useState, useEffect, useMemo } from "react";
+
 import { MapContainer, TileLayer } from "react-leaflet";
+import "leaflet-control-geocoder/dist/Control.Geocoder.css";
+import "leaflet-control-geocoder/dist/Control.Geocoder.js";
 import "leaflet/dist/leaflet.css";
+
 import "../Assets/SCSS/maps.scss";
 import LocationMarker from "./LocationMarker";
 import attributions from "../helpers/osmProvider";
@@ -8,6 +12,7 @@ import ToolTipPoly from "../components/ToolTipPoly";
 import "bootstrap/dist/css/bootstrap.css";
 import MapsControl from "../components/MapsControl";
 import WeatherInfo from "../components/WeatherInfo";
+import LeafletControlGeocoder from '../components/LeafletControlGeocoder';
 
 import {
   Container,
@@ -21,6 +26,17 @@ import ImageForm from "../components/ImageForm";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faBars, faClose } from "@fortawesome/free-solid-svg-icons";
 import ReviewMarker from '../components/ReviewMarker';
+
+import L from "leaflet";
+
+const icon = L.icon({
+  iconSize: [25, 41],
+  iconAnchor: [10, 41],
+  popupAnchor: [2, -40],
+  iconUrl: "https://unpkg.com/leaflet@1.6/dist/images/marker-icon.png",
+  shadowUrl: "https://unpkg.com/leaflet@1.6/dist/images/marker-shadow.png",
+});
+
 
 const hanoipoints = [
   [21.079374593525337, 105.89481353759767],
@@ -82,7 +98,6 @@ export default function Maps() {
 
   const [reviews, setReviews] = useState([]);
 
-
   useEffect(() => {
     fetch("https://server-maps-travel-website2.onrender.com/points/data")
       .then((response) => response.json())
@@ -115,6 +130,11 @@ export default function Maps() {
           lat: position.coords.latitude,
           lng: position.coords.longitude
         });
+
+        // map.flyTo({
+        //   lat: position.coords.latitude,
+        //   lng: position.coords.longitude
+        // }, map.getZoom());
 
         setAlertState({});
         console.log('detected location...');
@@ -190,7 +210,30 @@ export default function Maps() {
         ))
       }
     </>
-  ), [reviews])
+  ), [reviews]);
+
+
+  useEffect(() => {
+    if (map) {
+      var geocoder = L.Control.Geocoder.nominatim();
+
+      L.Control.geocoder({
+        query: "",
+        placeholder: "Search here...",
+        defaultMarkGeocode: false,
+        geocoder,
+      })
+        .on("markgeocode", function (e) {
+          var latlng = e.geocode.center;
+          L.marker(latlng, { icon })
+            .addTo(map)
+            .bindPopup(e.geocode.name)
+            .openPopup();
+          map.fitBounds(e.geocode.bbox);
+        })
+        .addTo(map);
+    }
+  }, [map]);
 
   return (
     <>
@@ -254,6 +297,8 @@ export default function Maps() {
                 scrollWheelZoom={false}
                 style={{ height: "100vh", position: "relative", zIndex: 5 }}
               >
+                {/* <LeafletControlGeocoder /> */}
+
                 {/* User Location Marker */}
                 <LocationMarker
                   center={center}
