@@ -13,7 +13,7 @@ function LocationMarker({
 
     const imgData = useMemo(
         () => ({
-            url: 'https://server-maps-travel-website.onrender.com' + review.image.url,
+            url: 'https://server-maps-travel-website2.onrender.com' + review.image.url,
             description: review.description
         }),
         [review.description, review.image.url]);

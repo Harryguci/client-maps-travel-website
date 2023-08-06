@@ -48,7 +48,7 @@ export default function ImageForm({ location, hide }) {
         <>
             {bgDark}
             <Form
-                action='https://server-maps-travel-website.onrender.com/send-image'
+                action='https://server-maps-travel-website2.onrender.com/send-image'
                 method='POST'
                 enctype="multipart/form-data"
                 className='image-form center'

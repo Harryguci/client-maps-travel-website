@@ -84,14 +84,14 @@ export default function Maps() {
 
 
   useEffect(() => {
-    fetch("https://server-maps-travel-website.onrender.com/points/data")
+    fetch("https://server-maps-travel-website2.onrender.com/points/data")
       .then((response) => response.json())
       .then((data) => setCites(data))
       .catch((error) => console.log(error));
   }, []);
 
   useEffect(() => {
-    fetch('https://server-maps-travel-website.onrender.com/get-image')
+    fetch('https://server-maps-travel-website2.onrender.com/get-image')
       .then((response) => response.json())
       .then((data) => setReviews(data))
       .catch((error) => console.log(error));
@@ -153,7 +153,7 @@ export default function Maps() {
 
     setPoints([]);
     if (newCityState && points && points.length) {
-      await fetch("https://server-maps-travel-website.onrender.com/points/data",
+      await fetch("https://server-maps-travel-website2.onrender.com/points/data",
         // await fetch("http://localhost:3001/points/data",
         {
           method: "POST",
@@ -218,7 +218,6 @@ export default function Maps() {
         showPolygon={showPolygon}
         setShowPolygon={setShowPolygon}
         newCityState={newCityState}
-        setNewCityState={setNewCityState}
         handleAddPlace={handleAddPlace}
         setShowImageForm={setShowImageForm}
         hide={() => setShowMapsControl(false)}
