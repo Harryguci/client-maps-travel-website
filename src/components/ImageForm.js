@@ -88,7 +88,6 @@ function ImageForm({ location, hide }) {
                             type="file"
                             name="image"
                             placeholder='Your image'
-                            // value={}
                             onChange={handleAddFile}
                             accept="image/png, image/jpeg"
                             required

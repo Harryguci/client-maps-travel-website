@@ -289,7 +289,7 @@ export default function Maps() {
             onClick={(e) => setShowInfoBox((prev) => !prev)}
             style={{ width: "100%" }}
           >
-            {!showMapsControl && !showImageForm && showInforBox ? <FontAwesomeIcon icon={faClose} /> : "Info Box"}
+            {!showMapsControl && !showImageForm && showInforBox ? <FontAwesomeIcon icon={faClose} /> : "Weather"}
           </button>
         </div>
         {!showMapsControl && !showImageForm && showInforBox && (
