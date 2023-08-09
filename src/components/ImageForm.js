@@ -1,10 +1,10 @@
-import { useState, useEffect, useCallback, useMemo } from 'react';
+import { useState, useEffect, useCallback, useMemo, memo } from 'react';
 import { Button, Form, FormControl, FormLabel } from 'react-bootstrap';
 import '../Assets/SCSS/imageForm.scss';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faClose } from '@fortawesome/free-solid-svg-icons';
 
-export default function ImageForm({ location, hide }) {
+function ImageForm({ location, hide }) {
     const [description, setDescription] = useState("");
     const [fileState, setFileState] = useState();
     const [user, setUser] = useState("")
@@ -17,6 +17,8 @@ export default function ImageForm({ location, hide }) {
             console.log(err);
         }
     }
+
+    console.log('[ImageForm] rerender');
 
     useEffect(() => {
         if (fileState && fileState.name) {
@@ -120,3 +122,6 @@ export default function ImageForm({ location, hide }) {
         </>
     )
 }
+
+
+export default ImageForm;

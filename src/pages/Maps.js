@@ -87,7 +87,6 @@ export default function Maps() {
     lat: 21.023997,
     lng: 105.806099,
   });
-  const [afterLocation, setAfterLocation] = useState(currentLocation);
 
   const [newCityState, setNewCityState] = useState("");
   const [weatherData, setWeatherData] = useState({});
@@ -145,7 +144,6 @@ export default function Maps() {
       .then((data) => setReviews(data))
       .catch((error) => setDataError({ error: error }));
   }, []);
-
 
   useEffect(() => {
     if (dataError && dataError.error) {
@@ -289,26 +287,28 @@ export default function Maps() {
         )}
       </div>
 
-      {showMapsControl && map && !showImageForm ? <MapsControl
-        cites={cites}
-        setCenter={setCenter}
-        setCurrentLocation={setCurrentLocation}
-        setPoints={setPoints}
-        hanoipoints={hanoipoints}
-        showPolygon={showPolygon}
-        setShowPolygon={setShowPolygon}
-        newCityState={newCityState}
-        handleAddPlace={handleAddPlace}
-        setShowImageForm={setShowImageForm}
-        hide={() => setShowMapsControl(false)}
-        map={map}
-      /> : <button
-        className="custom-button position-absolute"
-        style={{ top: 100, left: 20, zIndex: 2000 }}
-        onClick={e => { setShowMapsControl(true); setCurrentLocation(afterLocation) }}
-      >
-        <FontAwesomeIcon icon={faBars} />
-      </button>}
+      {showMapsControl && map && !showImageForm ?
+        <MapsControl
+          cites={cites}
+          setCenter={setCenter}
+          setCurrentLocation={setCurrentLocation}
+          setPoints={setPoints}
+          hanoipoints={hanoipoints}
+          showPolygon={showPolygon}
+          setShowPolygon={setShowPolygon}
+          newCityState={newCityState}
+          setNewCityState={setNewCityState}
+          handleAddPlace={handleAddPlace}
+          setShowImageForm={setShowImageForm}
+          hide={() => setShowMapsControl(false)}
+          map={map}
+        /> : <button
+          className="custom-button position-absolute"
+          style={{ top: 100, left: 20, zIndex: 2000 }}
+          onClick={e => { setShowMapsControl(true); }}
+        >
+          <FontAwesomeIcon icon={faBars} />
+        </button>}
 
       {showImageForm && ( // disable prettier 
         <ImageForm location={currentLocation} hide={() => setShowImageForm(false)} />
@@ -342,7 +342,6 @@ export default function Maps() {
                   points={points}
                   currentLocation={currentLocation}
                   setPoints={setPoints}
-                  setAfterLocation={setAfterLocation}
                   setCurrentLocation={setCurrentLocation}
                   setAlertState={setAlertState}
                   enablePoly={showPolygon}

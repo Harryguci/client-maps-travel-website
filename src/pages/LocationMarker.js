@@ -9,7 +9,6 @@ function LocationMarker({
   currentLocation,
   setPoints,
   setCurrentLocation,
-  setAfterLocation,
   setAlertState,
   showMapsControl,
   showImageForm
@@ -21,7 +20,6 @@ function LocationMarker({
       // console.log(e.target);
       if (!showMapsControl && !showImageForm) {
         setPosition(e.latlng);
-        setAfterLocation(currentLocation);
         setCurrentLocation(e.latlng);
         setPoints((prev) => [...prev, [e.latlng.lat, e.latlng.lng]]);
       }

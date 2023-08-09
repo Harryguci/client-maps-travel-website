@@ -82,6 +82,12 @@ function MapsControl({
                                         lng: city.points[0][1],
                                     }, map.getZoom());
 
+
+                                    setCurrentLocation({
+                                        lat: city.points[0][0],
+                                        lng: city.points[0][1],
+                                    });
+
                                     setPoints(city.points || hanoipoints);
                                     window.scrollTo(0, 0);
                                 }}
