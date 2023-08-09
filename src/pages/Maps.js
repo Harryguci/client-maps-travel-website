@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useMemo } from "react";
+import React, { useState, useEffect, useMemo, useCallback } from "react";
 
 import { MapContainer, TileLayer } from "react-leaflet";
 import "leaflet-control-geocoder/dist/Control.Geocoder.css";
@@ -12,7 +12,7 @@ import ToolTipPoly from "../components/ToolTipPoly";
 import "bootstrap/dist/css/bootstrap.css";
 import MapsControl from "../components/MapsControl";
 import WeatherInfo from "../components/WeatherInfo";
-import LeafletControlGeocoder from '../components/LeafletControlGeocoder';
+// import LeafletControlGeocoder from '../components/LeafletControlGeocoder';
 
 import {
   Container,
@@ -98,19 +98,62 @@ export default function Maps() {
 
   const [reviews, setReviews] = useState([]);
 
+  const [dataError, setDataError] = useState();
+
+  const refreshData = useCallback(() => {
+    const promiseData = fetch("https://server-maps-travel-website2.onrender.com/points/data")
+      .then((response) => response.json())
+      .then((data) => {
+        setCites(data);
+        return data;
+      })
+      .catch((error) => {
+        setDataError({ error: error })
+        return ({ error })
+      });
+
+    const promiseGetImg = fetch('https://server-maps-travel-website2.onrender.com/get-image')
+      .then((response) => response.json())
+      .then((data) => {
+        setReviews(data);
+        return data
+      })
+      .catch((error) => {
+        setDataError({ error: error })
+        return ({ error })
+      });
+
+
+    Promise.all([promiseData, promiseGetImg])
+      .then(value => !(value[0].error || value[1].error))
+      .then(is => {
+        if (is) setDataError(null);
+      })
+      .catch((error) => error);
+  }, []);
+
   useEffect(() => {
     fetch("https://server-maps-travel-website2.onrender.com/points/data")
       .then((response) => response.json())
       .then((data) => setCites(data))
-      .catch((error) => console.log(error));
+      .catch((error) => setDataError({ error: error }));
   }, []);
 
   useEffect(() => {
     fetch('https://server-maps-travel-website2.onrender.com/get-image')
       .then((response) => response.json())
       .then((data) => setReviews(data))
-      .catch((error) => console.log(error));
+      .catch((error) => setDataError({ error: error }));
   }, []);
+
+
+  useEffect(() => {
+    if (dataError && dataError.error) {
+      console.log('Refresh data');
+      refreshData();
+    }
+  }, [dataError, refreshData])
+
 
   useEffect(() => {
     if (navigator.geolocation) {
@@ -131,11 +174,6 @@ export default function Maps() {
           lng: position.coords.longitude
         });
 
-        // map.flyTo({
-        //   lat: position.coords.latitude,
-        //   lng: position.coords.longitude
-        // }, map.getZoom());
-
         setAlertState({});
         console.log('detected location...');
       });
@@ -144,7 +182,6 @@ export default function Maps() {
 
   useEffect(() => {
     fetch(
-      // `http://localhost:3001/get-weather?lat=${currentLocation.lat}&lon=${currentLocation.lng}`
       `https://openweather-personal-api.onrender.com/get-weather?lat=${currentLocation.lat}&lon=${currentLocation.lng}`
     )
       .then((response) => response.clone().json())
