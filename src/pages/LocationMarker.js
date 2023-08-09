@@ -12,13 +12,14 @@ function LocationMarker({
   setAfterLocation,
   setAlertState,
   showMapsControl,
+  showImageForm
 }) {
   const [position, setPosition] = useState(center);
 
   const map = useMapEvents({
     click(e) {
       // console.log(e.target);
-      if (!showMapsControl) {
+      if (!showMapsControl && !showImageForm) {
         setPosition(e.latlng);
         setAfterLocation(currentLocation);
         setCurrentLocation(e.latlng);

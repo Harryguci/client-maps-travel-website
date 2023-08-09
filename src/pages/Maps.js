@@ -144,12 +144,12 @@ export default function Maps() {
 
   useEffect(() => {
     fetch(
-      `https://api.openweathermap.org/data/2.5/weather?lat=${currentLocation.lat}&lon=${currentLocation.lng}&appid=be05f4fc63cacfee5809402834381803`
+      // `http://localhost:3001/get-weather?lat=${currentLocation.lat}&lon=${currentLocation.lng}`
+      `https://openweather-personal-api.onrender.com/get-weather?lat=${currentLocation.lat}&lon=${currentLocation.lng}`
     )
-      .then((response) => response.json())
+      .then((response) => response.clone().json())
       .then((response) => {
         // Convert from K temp to C temp
-
         response.main.temp = Math.round(response.main.temp - 273);
         response.main.temp_max = Math.round(response.main.temp_max - 273);
         response.main.temp_min = Math.round(response.main.temp_min - 273);
@@ -310,6 +310,7 @@ export default function Maps() {
                   setAlertState={setAlertState}
                   enablePoly={showPolygon}
                   showMapsControl={showMapsControl}
+                  showImageForm={showImageForm}
                 />
 
                 {/* Display review Markers */}
