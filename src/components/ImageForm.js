@@ -70,6 +70,7 @@ function ImageForm({ location, hide }) {
                         value={user}
                         placeholder='Your name'
                         onChange={e => setUser(e.target.value)}
+                        required
                     />
                 </div>
                 <div>
@@ -78,6 +79,7 @@ function ImageForm({ location, hide }) {
                         placeholder="Description"
                         value={description}
                         onChange={e => setDescription(e.target.value)}
+                        required
                     />
                 </div>
                 <div>
