@@ -83,10 +83,12 @@ export default function Maps() {
   const [points, setPoints] = useState([]);
   const [showPolygon, setShowPolygon] = useState(false);
   const [cites, setCites] = useState([]);
+
   const [currentLocation, setCurrentLocation] = useState({
     lat: 21.023997,
     lng: 105.806099,
   });
+  const [previosLocation, setPreviosLocation] = useState(null)
 
   const [newCityState, setNewCityState] = useState("");
   const [weatherData, setWeatherData] = useState({});
@@ -179,20 +181,28 @@ export default function Maps() {
   }, []);
 
   useEffect(() => {
-    fetch(
-      `https://openweather-personal-api.onrender.com/get-weather?lat=${currentLocation.lat}&lon=${currentLocation.lng}`
-    )
-      .then((response) => response.clone().json())
-      .then((response) => {
-        // Convert from K temp to C temp
-        response.main.temp = Math.round(response.main.temp - 273);
-        response.main.temp_max = Math.round(response.main.temp_max - 273);
-        response.main.temp_min = Math.round(response.main.temp_min - 273);
-        response.main.feels_like = Math.round(response.main.feels_like - 273);
+    if (!previosLocation
+      || Math.abs(previosLocation.lat - currentLocation.lat) >= 0.07
+      || Math.abs(previosLocation.lng - currentLocation.lng) >= 0.07)
+      fetch(
+        `https://openweather-personal-api.onrender.com/get-weather?lat=${currentLocation.lat}&lon=${currentLocation.lng}`
+      )
+        .then((response) => response.clone().json())
+        .then((response) => {
+          // Convert from K temp to C temp
+          console.log('[Fetch Weather]');
+          response.main.temp = Math.round(response.main.temp - 273);
+          response.main.temp_max = Math.round(response.main.temp_max - 273);
+          response.main.temp_min = Math.round(response.main.temp_min - 273);
+          response.main.feels_like = Math.round(response.main.feels_like - 273);
 
-        setWeatherData(response);
-      })
-      .catch((err) => console.log(err));
+          setPreviosLocation(currentLocation);
+          setWeatherData(response);
+        })
+        .catch((err) => console.log(err));
+
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [currentLocation]);
 
   const [showMapsControl, setShowMapsControl] = useState(() => {
