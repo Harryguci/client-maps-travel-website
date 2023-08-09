@@ -89,6 +89,7 @@ function ImageForm({ location, hide }) {
                             // value={}
                             onChange={handleAddFile}
                             accept="image/png, image/jpeg"
+                            required
                         />
                         Add Image
                     </FormLabel>
@@ -114,7 +115,7 @@ function ImageForm({ location, hide }) {
                     />
                 </div>
                 <div>
-                    <Button type="submit">
+                    <Button type="submit" disabled={fileState && fileState.name ? false : true}>
                         Send
                     </Button>
                 </div>
