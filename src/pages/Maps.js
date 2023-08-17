@@ -12,7 +12,7 @@ import ToolTipPoly from "../components/ToolTipPoly";
 import "bootstrap/dist/css/bootstrap.css";
 import MapsControl from "../components/MapsControl";
 import WeatherInfo from "../components/WeatherInfo";
-// import LeafletControlGeocoder from '../components/LeafletControlGeocoder';
+// import axios from "axios";
 
 import {
   Container,
@@ -102,7 +102,7 @@ export default function Maps() {
   const [dataError, setDataError] = useState();
 
   const refreshData = useCallback(() => {
-    const promiseData = fetch("https://server-maps-travel-website2.onrender.com/points/data")
+    const promiseData = fetch("/points/data")
       .then((response) => response.json())
       .then((data) => {
         setCites(data);
@@ -113,7 +113,7 @@ export default function Maps() {
         return ({ error })
       });
 
-    const promiseGetImg = fetch('https://server-maps-travel-website2.onrender.com/get-image')
+    const promiseGetImg = fetch('/get-image')
       .then((response) => response.json())
       .then((data) => {
         setReviews(data);
@@ -124,7 +124,6 @@ export default function Maps() {
         return ({ error })
       });
 
-
     Promise.all([promiseData, promiseGetImg])
       .then(value => !(value[0].error || value[1].error))
       .then(is => {
@@ -134,14 +133,14 @@ export default function Maps() {
   }, []);
 
   useEffect(() => {
-    fetch("https://server-maps-travel-website2.onrender.com/points/data")
+    fetch("/points/data")
       .then((response) => response.json())
       .then((data) => setCites(data))
       .catch((error) => setDataError({ error: error }));
   }, []);
 
   useEffect(() => {
-    fetch('https://server-maps-travel-website2.onrender.com/get-image')
+    fetch('/get-image')
       .then((response) => response.json())
       .then((data) => setReviews(data))
       .catch((error) => setDataError({ error: error }));
@@ -218,7 +217,7 @@ export default function Maps() {
 
     setPoints([]);
     if (newCityState && points && points.length) {
-      await fetch("https://server-maps-travel-website2.onrender.com/points/data",
+      await fetch("/points/data",
         // await fetch("http://localhost:3001/points/data",
         {
           method: "POST",

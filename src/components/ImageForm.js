@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback, useMemo, memo } from 'react';
+import { useState, useEffect, useCallback, useMemo } from 'react';
 import { Button, Form, FormControl, FormLabel } from 'react-bootstrap';
 import '../Assets/SCSS/imageForm.scss';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';

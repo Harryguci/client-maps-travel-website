@@ -17,7 +17,6 @@ function LocationMarker({
 
   const map = useMapEvents({
     click(e) {
-      // console.log(e.target);
       if (!showMapsControl && !showImageForm) {
         setPosition(e.latlng);
         setCurrentLocation(e.latlng);
@@ -44,7 +43,6 @@ function LocationMarker({
     },
     locationfound(e) {
       setPosition(e.latlng);
-      // console.log(e.latlng);
       map.flyTo(e.latlng, map.getZoom());
     },
   });
