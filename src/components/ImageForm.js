@@ -1,8 +1,9 @@
-import { useState, useEffect, useCallback, useMemo } from 'react';
+import { useState, useEffect, useCallback, useMemo, memo } from 'react';
 import { Button, Form, FormControl, FormLabel } from 'react-bootstrap';
 import '../Assets/SCSS/imageForm.scss';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faClose } from '@fortawesome/free-solid-svg-icons';
+import config from '../config/config';
 
 function ImageForm({ location, hide }) {
     const [description, setDescription] = useState("");
@@ -17,8 +18,6 @@ function ImageForm({ location, hide }) {
             console.log(err);
         }
     }
-
-    console.log('[ImageForm] rerender');
 
     useEffect(() => {
         if (fileState && fileState.name) {
@@ -36,7 +35,7 @@ function ImageForm({ location, hide }) {
     const handleHide = useCallback(() => {
         if (hide) {
             document.querySelector('.image-form').classList.add('hidden');
-            setTimeout(() => hide(), 300);
+            setTimeout(() => hide(false), 300);
         }
     }, [hide]);
 
@@ -50,7 +49,8 @@ function ImageForm({ location, hide }) {
         <>
             {bgDark}
             <Form
-                action='https://server-maps-travel-website2.onrender.com/send-image'
+                action={config.SERVER_URI ? `${config.SERVER_URI}/send-image`
+                    : 'https://server-maps-travel-website2.onrender.com/send-image'}
                 method='POST'
                 enctype="multipart/form-data"
                 className='image-form center'
@@ -126,4 +126,4 @@ function ImageForm({ location, hide }) {
 }
 
 
-export default ImageForm;
+export default memo(ImageForm);

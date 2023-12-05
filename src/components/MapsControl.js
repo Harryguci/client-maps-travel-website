@@ -1,4 +1,4 @@
-import { useCallback, useMemo } from 'react';
+import { useCallback, useMemo, memo } from 'react';
 import { FormControl, Row } from 'react-bootstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faClose } from '@fortawesome/free-solid-svg-icons';
@@ -82,7 +82,6 @@ function MapsControl({
                                         lng: city.points[0][1],
                                     }, map.getZoom());
 
-
                                     setCurrentLocation({
                                         lat: city.points[0][0],
                                         lng: city.points[0][1],
@@ -141,4 +140,4 @@ function MapsControl({
     )
 }
 
-export default MapsControl;
+export default memo(MapsControl);

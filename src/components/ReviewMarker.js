@@ -3,7 +3,7 @@ import { Marker, Popup } from "react-leaflet";
 import { Icon } from "leaflet";
 import ImageBox from "./ImageBox";
 import '../Assets/SCSS/reviewMarker.scss';
-
+import config from "../config/config";
 function LocationMarker({
     review
 }, key) {
@@ -13,7 +13,8 @@ function LocationMarker({
 
     const imgData = useMemo(
         () => ({
-            url: 'https://server-maps-travel-website2.onrender.com' + review.image.url,
+            url: (config.SERVER_URI ? `${config.SERVER_URI}/${review.image.url}`
+                : `https://server-maps-travel-website2.onrender.com/${review.image.url}`),
             description: review.description
         }),
         [review.description, review.image.url]);

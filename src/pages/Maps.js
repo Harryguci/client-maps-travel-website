@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useMemo, useCallback } from "react";
+import React, { useState, useEffect, useMemo, useCallback, memo } from "react";
 
 import { MapContainer, TileLayer } from "react-leaflet";
 import "leaflet-control-geocoder/dist/Control.Geocoder.css";
@@ -28,6 +28,8 @@ import { faBars, faClose } from "@fortawesome/free-solid-svg-icons";
 import ReviewMarker from '../components/ReviewMarker';
 
 import L from "leaflet";
+
+import config from '../config/config';
 
 const icon = L.icon({
   iconSize: [25, 41],
@@ -76,9 +78,8 @@ function createId(name) {
   return convertVNtoEng(name).trim().toLowerCase().replace(/ /g, "-");
 }
 
-export default function Maps() {
+function Maps() {
   const [map, setMap] = useState(null);
-
   const [center, setCenter] = useState({ lat: 21.023997, lng: 105.806099 });
   const [points, setPoints] = useState([]);
   const [showPolygon, setShowPolygon] = useState(false);
@@ -88,21 +89,24 @@ export default function Maps() {
     lat: 21.023997,
     lng: 105.806099,
   });
-  const [previosLocation, setPreviosLocation] = useState(null)
+
+  const [previousLocation, setPreviosLocation] = useState(null)
 
   const [newCityState, setNewCityState] = useState("");
   const [weatherData, setWeatherData] = useState({});
 
   const [alertState, setAlertState] = useState({});
-  const [showInforBox, setShowInfoBox] = useState(true);
+  const [showInfoBox, setShowInfoBox] = useState(true);
   const [showImageForm, setShowImageForm] = useState(false);
 
   const [reviews, setReviews] = useState([]);
 
   const [dataError, setDataError] = useState();
 
+  const [timeOut, setTimeOut] = useState(1);
+
   const refreshData = useCallback(() => {
-    const promiseData = fetch("/points/data")
+    const promiseData = fetch(`${config.SERVER_URI}/points/data`)
       .then((response) => response.json())
       .then((data) => {
         setCites(data);
@@ -113,7 +117,7 @@ export default function Maps() {
         return ({ error })
       });
 
-    const promiseGetImg = fetch('/get-image')
+    const promiseGetImg = fetch(`${config.SERVER_URI}/get-image`)
       .then((response) => response.json())
       .then((data) => {
         setReviews(data);
@@ -133,26 +137,33 @@ export default function Maps() {
   }, []);
 
   useEffect(() => {
-    fetch("/points/data")
+    fetch(`${config.SERVER_URI}/points/data`)
       .then((response) => response.json())
       .then((data) => setCites(data))
       .catch((error) => setDataError({ error: error }));
   }, []);
 
   useEffect(() => {
-    fetch('/get-image')
+    fetch(`${config.SERVER_URI}/get-image`)
       .then((response) => response.json())
       .then((data) => setReviews(data))
       .catch((error) => setDataError({ error: error }));
   }, []);
 
+  // useEffect(() => console.log('CONFIG' + config.SERVER_URI), []);
+
   useEffect(() => {
-    if (dataError && dataError.error) {
+    setTimeOut(() => {
+      setTimeOut(prev => --prev);
+    }, 1000);
+  }, []);
+
+  useEffect(() => {
+    if (timeOut && dataError && dataError.error) {
       console.log('Refresh data');
       refreshData();
     }
-  }, [dataError, refreshData])
-
+  }, [timeOut, dataError, refreshData])
 
   useEffect(() => {
     if (navigator.geolocation) {
@@ -180,9 +191,9 @@ export default function Maps() {
   }, []);
 
   useEffect(() => {
-    if (!previosLocation
-      || Math.abs(previosLocation.lat - currentLocation.lat) >= 0.07
-      || Math.abs(previosLocation.lng - currentLocation.lng) >= 0.07)
+    if (!previousLocation
+      || Math.abs(previousLocation.lat - currentLocation.lat) >= 0.07
+      || Math.abs(previousLocation.lng - currentLocation.lng) >= 0.07)
       fetch(
         `https://openweather-personal-api.onrender.com/get-weather?lat=${currentLocation.lat}&lon=${currentLocation.lng}`
       )
@@ -217,8 +228,7 @@ export default function Maps() {
 
     setPoints([]);
     if (newCityState && points && points.length) {
-      await fetch("/points/data",
-        // await fetch("http://localhost:3001/points/data",
+      await fetch(`${config.SERVER_URI}/points/data`,
         {
           method: "POST",
           mode: "cors", // no-cors, *cors, same-origin
@@ -288,10 +298,10 @@ export default function Maps() {
             onClick={(e) => setShowInfoBox((prev) => !prev)}
             style={{ width: "100%" }}
           >
-            {!showMapsControl && !showImageForm && showInforBox ? <FontAwesomeIcon icon={faClose} /> : "Weather"}
+            {!showMapsControl && !showImageForm && showInfoBox ? <FontAwesomeIcon icon={faClose} /> : "Weather"}
           </button>
         </div>
-        {!showMapsControl && !showImageForm && showInforBox && (
+        {!showMapsControl && !showImageForm && showInfoBox && (
           <WeatherInfo weatherData={weatherData} />
         )}
       </div>
@@ -320,7 +330,7 @@ export default function Maps() {
         </button>}
 
       {showImageForm && ( // disable prettier 
-        <ImageForm location={currentLocation} hide={() => setShowImageForm(false)} />
+        <ImageForm location={currentLocation} hide={setShowImageForm} />
       )}
 
       <Container fluid>
@@ -375,3 +385,5 @@ export default function Maps() {
     </>
   );
 }
+
+export default memo(Maps);
